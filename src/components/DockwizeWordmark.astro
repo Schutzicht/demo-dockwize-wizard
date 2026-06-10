@@ -1,0 +1,17 @@
+---
+// Gestapelde Dockwize-merknaam (DOCK / WIZE.) + gele D-spraakbel, zoals de huisstijl.
+import DockwizeMark from './DockwizeMark.astro';
+interface Props {
+  variant?: 'dark' | 'light';
+  size?: number; // pixelhoogte per regel
+}
+const { variant = 'dark', size = 18 } = Astro.props;
+const color = variant === 'light' ? '#ffffff' : '#1d1d1b';
+---
+<div class="flex items-center gap-2">
+  <div class="font-extrabold uppercase tracking-[-0.04em] leading-[0.84]" style={`color:${color};font-size:${size}px`}>
+    <span class="block">Dock</span>
+    <span class="block">Wize.</span>
+  </div>
+  <DockwizeMark size={Math.round(size * 1.9)} dotColor={variant === 'light' ? '#ffffff' : '#1d1d1b'} />
+</div>

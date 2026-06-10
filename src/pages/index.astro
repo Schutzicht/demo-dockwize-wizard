@@ -1,0 +1,226 @@
+---
+import Base from '../layouts/Base.astro';
+import DockwizeWordmark from '../components/DockwizeWordmark.astro';
+import DockwizeMark from '../components/DockwizeMark.astro';
+import GroeiscanWidget from '../components/GroeiscanWidget.astro';
+import { PHASES, PACKAGES } from '../lib/model';
+
+const pkgList = Object.values(PACKAGES).filter((p, i, a) => a.findIndex((x) => x.key === p.key) === i);
+const nav = [
+  { label: 'Starten', href: '#fasen' },
+  { label: 'Groeien', href: '#programmas' },
+  { label: 'Community', href: '#contact' },
+  { label: 'Faciliteiten', href: '#programmas' },
+  { label: 'Events', href: '#contact' },
+];
+const iconArrowR = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+---
+
+<Base title="Dockwize — innovatie- en groeihub voor Zeeland">
+  <!-- ============ HERO (exacte Dockwize-look) ============ -->
+  <section class="relative min-h-[100svh] flex flex-col bg-[var(--color-ink)] text-white overflow-hidden">
+    <img id="hero-media" src="/images/hero.jpg" alt="Dockwize Get Unlocked event" class="hero-kenburns absolute inset-0 w-full h-full object-cover object-center" />
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-ink)]/60 via-[var(--color-ink)]/15 to-[var(--color-ink)]/30 pointer-events-none"></div>
+    <div class="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-[var(--color-ink)]/70 to-transparent pointer-events-none"></div>
+
+    <!-- Top: headline links, nav rechts -->
+    <div class="relative z-20 mx-auto w-full max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-8 sm:pt-11 flex items-start justify-between gap-8">
+      <div class="max-w-2xl">
+        <h1 class="font-extrabold tracking-[-0.03em] leading-[0.95] text-[clamp(2.2rem,4vw,4.2rem)] [text-shadow:0_2px_24px_rgba(0,0,0,0.25)]">
+          Dockwize.<br />Unlocks your<br />potential.
+        </h1>
+        <button id="hero-pause" type="button" class="mt-6 inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-3.5 py-2 text-[12.5px] font-medium text-white hover:bg-white/25 transition active:scale-95">
+          <span id="hero-pause-icon" class="grid place-items-center w-3.5 h-3.5">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          </span>
+          <span id="hero-pause-label">Pauzeer video</span>
+        </button>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-0.5 rounded-full bg-black/25 backdrop-blur-xl border border-white/15 p-1.5 shadow-[0_10px_34px_-12px_rgba(0,0,0,0.6)] shrink-0">
+        {nav.map((n) => (
+          <a href={n.href} class="px-3.5 py-2 rounded-full text-[14px] font-medium text-white/85 hover:text-white hover:bg-white/10 transition">{n.label}</a>
+        ))}
+        <button id="menu-toggle" class="ml-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] text-[14px] font-bold hover:brightness-105 transition active:scale-95">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          Menu
+        </button>
+      </nav>
+      <button id="menu-toggle-m" class="md:hidden shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] text-[13px] font-bold active:scale-95">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </button>
+    </div>
+
+    <div class="flex-1"></div>
+
+    <!-- Onderaan: 3 zwevende blokken -->
+    <div class="relative z-20 mx-auto w-full max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-8 sm:pb-10">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5">
+        <!-- Blok 1: logo + ontdek waarom (licht, frosted) -->
+        <div class="md:col-span-5 rounded-[22px] bg-white/80 backdrop-blur-xl border border-white/40 shadow-[var(--shadow-xl)] p-5 sm:p-7 flex items-end justify-between gap-4 min-h-[160px]">
+          <div class="flex items-center gap-2 select-none" title="Dockwize">
+            <div class="logo-knockout font-extrabold uppercase tracking-[-0.045em] leading-[0.82] text-[28px]">
+              <span class="block">Dock</span>
+              <span class="block">Wize.</span>
+            </div>
+            <span class="logo-knockout-mark block w-[52px] h-[52px] shrink-0"></span>
+            <span class="sr-only">Dockwize</span>
+          </div>
+          <a href="#fasen" class="shrink-0 inline-flex items-center gap-3 text-[14px] font-semibold text-[var(--color-ink)] group">
+            <span class="grid place-items-center w-11 h-11 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] transition-transform group-hover:translate-y-0.5">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+            </span>
+            Ontdek waarom
+          </a>
+        </div>
+
+        <!-- Blok 2: foto + tekst (donker) -->
+        <div class="md:col-span-4 rounded-[22px] bg-[var(--color-ink)] shadow-[var(--shadow-xl)] overflow-hidden flex items-stretch min-h-[148px]">
+          <div class="w-2/5 shrink-0 relative overflow-hidden">
+            <img src="/images/hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover object-[55%_center]" />
+          </div>
+          <div class="flex-1 p-4 sm:p-5 flex flex-col justify-between gap-3">
+            <p class="text-[15px] font-bold leading-snug text-white">Met je bedrijf groeien en innoveren bij Dockwize?</p>
+            <a href="#programmas" class="self-start inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold hover:brightness-110 transition active:scale-95">
+              <span class="grid place-items-center w-6 h-6 rounded-full bg-white/15">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+              </span>
+              Bekijk programma&apos;s
+            </a>
+          </div>
+        </div>
+
+        <!-- Blok 3: geel (CTA) -->
+        <div class="md:col-span-3 rounded-[22px] bg-[var(--color-accent)] shadow-[var(--shadow-xl)] p-5 sm:p-6 flex flex-col justify-between gap-3 min-h-[148px]">
+          <p class="text-[16px] font-extrabold leading-[1.14] tracking-tight text-[var(--color-ink)]">Starten met ondernemen? Dockwize geeft je een boost.</p>
+          <button type="button" data-dwq-open class="self-start inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold hover:brightness-110 transition active:scale-95">
+            <span class="grid place-items-center w-6 h-6 rounded-full bg-white/15">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </span>
+            Doe de Groeiscan
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Fasen ============ -->
+  <section id="fasen" class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-28">
+    <div class="max-w-2xl" data-reveal>
+      <p class="text-[12px] uppercase tracking-[0.16em] font-bold text-[var(--color-ink-3)]">Het levensfasemodel</p>
+      <h2 class="mt-2 font-extrabold tracking-[-0.02em] leading-[1.02] text-[clamp(1.9rem,4.5vw,3rem)] text-[var(--color-ink)] text-balance">Elk bedrijf doorloopt vier fasen</h2>
+      <p class="mt-4 text-[15px] leading-relaxed text-[var(--color-ink-2)]">Weet jij in welke fase jij zit? En, minstens zo belangrijk: welke stappen je misschien hebt overgeslagen? De Groeiscan brengt het in kaart.</p>
+    </div>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {PHASES.map((p) => (
+        <div class="group rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:-translate-y-1 transition" style="transition-timing-function:var(--ease-out-quint);" data-reveal>
+          <div class="flex items-center justify-between">
+            <span class="grid place-items-center w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] text-[15px] font-extrabold">{p.id}</span>
+            <span class="text-[11px] text-[var(--color-ink-3)] uppercase tracking-wide">{p.tag}</span>
+          </div>
+          <h3 class="mt-4 text-[17px] font-bold tracking-tight text-[var(--color-ink)]">{p.name}</h3>
+          <p class="mt-1.5 text-[13px] leading-snug text-[var(--color-ink-2)]">{p.intro}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ Programma's ============ -->
+  <section id="programmas" class="border-y border-[var(--color-border)] bg-[var(--color-surface)]">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-28">
+      <div class="max-w-2xl" data-reveal>
+        <p class="text-[12px] uppercase tracking-[0.16em] font-bold text-[var(--color-ink-3)]">Programma&apos;s</p>
+        <h2 class="mt-2 font-extrabold tracking-[-0.02em] leading-[1.02] text-[clamp(1.9rem,4.5vw,3rem)] text-[var(--color-ink)] text-balance">Een programma voor elke fase</h2>
+      </div>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {pkgList.map((p) => (
+          <div class="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-bg)] p-6 hover:border-[var(--color-ink)] transition" style="transition-timing-function:var(--ease-out-quint);" data-reveal>
+            <div class="flex items-center gap-2">
+              <h3 class="text-[19px] font-extrabold tracking-tight text-[var(--color-ink)]">{p.label}</h3>
+              <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] font-bold">Fase {p.phase}</span>
+            </div>
+            <p class="mt-2 text-[13.5px] font-semibold text-[var(--color-ink-2)]">{p.tagline}</p>
+            <p class="mt-2 text-[13px] leading-snug text-[var(--color-ink-3)]">{p.focus}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA / contact ============ -->
+  <section id="contact" class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-28">
+    <div class="relative overflow-hidden rounded-[28px] bg-[var(--color-ink)] text-white px-7 sm:px-14 py-14 sm:py-20" data-reveal>
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-[var(--color-accent)]/15 blur-2xl"></div>
+      <div class="absolute right-10 top-10 hidden sm:block"><DockwizeMark size={64} dotColor="#ffffff" /></div>
+      <div class="relative max-w-xl">
+        <h2 class="font-extrabold tracking-[-0.02em] leading-[1.02] text-[clamp(1.9rem,5vw,3.2rem)] text-balance">Niet zeker waar je staat? Begin met de Groeiscan.</h2>
+        <p class="mt-4 text-[15px] leading-relaxed text-white/70">In 2 minuten weet je in welke fase je zit, welke stappen nog open staan en welk programma je verder helpt. Daarna denken we graag persoonlijk met je mee.</p>
+        <button type="button" data-dwq-open class="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] pl-2 pr-7 py-2 text-[14.5px] font-semibold hover:brightness-105 transition active:scale-[0.98]" style="transition-timing-function:var(--ease-out-quint);">
+          <span class="grid place-items-center w-9 h-9 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]" set:html={iconArrowR}></span>
+          Start de Groeiscan
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+      <DockwizeWordmark variant="dark" size={18} />
+      <p class="text-[12px] text-[var(--color-ink-3)]">Kenniswerf Vlissingen &middot; Demo-omgeving voor de Dockwize Groeiscan</p>
+    </div>
+  </footer>
+
+  <!-- Mobile / Menu overlay -->
+  <div id="menu-panel" class="fixed inset-0 z-[80] hidden">
+    <div id="menu-backdrop" class="absolute inset-0 bg-[var(--color-ink)]/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+    <div id="menu-sheet" class="absolute top-4 right-4 left-4 sm:left-auto sm:w-[340px] rounded-[24px] bg-[var(--color-surface)] shadow-[var(--shadow-xl)] p-6 -translate-y-3 opacity-0 transition-all duration-300" style="transition-timing-function:var(--ease-out-quint);">
+      <div class="flex items-center justify-between">
+        <DockwizeWordmark variant="dark" size={18} />
+        <button id="menu-close" aria-label="Sluiten" class="grid place-items-center w-9 h-9 rounded-full text-[var(--color-ink-3)] hover:bg-[var(--color-surface-2)] transition active:scale-95">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <nav class="mt-5 flex flex-col">
+        {nav.map((n, i) => (
+          <a href={n.href} class={`menu-link py-3 text-[16px] font-bold text-[var(--color-ink)] hover:text-[var(--color-ink-2)] transition ${i > 0 ? 'border-t border-[var(--color-border)]' : ''}`}>{n.label}</a>
+        ))}
+      </nav>
+      <button type="button" data-dwq-open class="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] py-3 text-[14px] font-semibold active:scale-[0.98]">Doe de Groeiscan</button>
+    </div>
+  </div>
+
+  <GroeiscanWidget contactUrl="#contact" />
+
+  <script is:inline>
+    (function () {
+      const panel = document.getElementById('menu-panel');
+      const backdrop = document.getElementById('menu-backdrop');
+      const sheet = document.getElementById('menu-sheet');
+      const open = () => { panel.classList.remove('hidden'); requestAnimationFrame(() => { backdrop.style.opacity = '1'; sheet.style.opacity = '1'; sheet.style.transform = 'none'; }); };
+      const close = () => { backdrop.style.opacity = '0'; sheet.style.opacity = '0'; sheet.style.transform = 'translateY(-12px)'; setTimeout(() => panel.classList.add('hidden'), 300); };
+      document.getElementById('menu-toggle')?.addEventListener('click', open);
+      document.getElementById('menu-toggle-m')?.addEventListener('click', open);
+      document.getElementById('menu-close')?.addEventListener('click', close);
+      backdrop?.addEventListener('click', close);
+      document.querySelectorAll('.menu-link').forEach((a) => a.addEventListener('click', close));
+      document.querySelector('#menu-panel [data-dwq-open]')?.addEventListener('click', close);
+
+      // Pauzeer / speel de hero ken-burns
+      const media = document.getElementById('hero-media');
+      const pauseBtn = document.getElementById('hero-pause');
+      let paused = false;
+      const playIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>';
+      const pauseIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+      pauseBtn?.addEventListener('click', () => {
+        paused = !paused;
+        if (media) media.style.animationPlayState = paused ? 'paused' : 'running';
+        const label = document.getElementById('hero-pause-label');
+        const icon = document.getElementById('hero-pause-icon');
+        if (label) label.textContent = paused ? 'Speel video' : 'Pauzeer video';
+        if (icon) icon.innerHTML = paused ? playIcon : pauseIcon;
+      });
+    })();
+  </script>
+</Base>

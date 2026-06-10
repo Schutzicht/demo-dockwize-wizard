@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #fafaf9;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f4f3;
+  --color-border: #e7e7e5;
+  --color-border-strong: #d4d4d2;
+  --color-ink: #1d1d1b;
+  --color-ink-2: #4a4a48;
+  --color-ink-3: #757572;
+  --color-muted: #9b9b98;
+
+  --color-accent: #ffda00;
+  --color-accent-soft: #fff4b8;
+  --color-accent-ink: #1d1d1b;
+
+  --color-success: #16a34a;
+  --color-success-soft: #dcfce7;
+  --color-warning: #d97706;
+  --color-warning-soft: #fef3c7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-info: #2563eb;
+  --color-info-soft: #dbeafe;
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.05), 0 1px 2px rgb(0 0 0 / 0.03);
+  --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 12px 32px -8px rgb(0 0 0 / 0.10), 0 4px 12px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 24px 60px -12px rgb(0 0 0 / 0.18), 0 8px 24px -8px rgb(0 0 0 / 0.10);
+
+  /* Emil-style motion */
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.022em;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1 { font-weight: 600; letter-spacing: -0.03em; }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .scrollbar-thin::-webkit-scrollbar { width: 8px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 99px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* Hero ken-burns (langzame zoom; pauzeerbaar via de knop) */
+.hero-kenburns {
+  animation: heroKenburns 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes heroKenburns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.12); }
+}
+
+/* Logo-cutout: de hero-foto schijnt door de letters/het merk heen
+   (vaste achtergrond = lijnt uit met de hero-foto erachter). */
+.logo-knockout {
+  background: url("/images/hero.jpg") center / cover fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.logo-knockout-mark {
+  background: url("/images/hero.jpg") center / cover fixed;
+  -webkit-mask: url("/dock-mark-mask.svg") center / contain no-repeat;
+  mask: url("/dock-mark-mask.svg") center / contain no-repeat;
+}
+
+/* Scroll-reveal (host page) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
+}

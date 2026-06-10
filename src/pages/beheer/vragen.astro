@@ -1,0 +1,220 @@
+---
+import Base from '../../layouts/Base.astro';
+import DockwizeLogo from '../../components/DockwizeLogo.astro';
+import { SITUATIONS, NEEDS, PHASES, PACKAGES, PHASE_PLAIN, TEAM_SIZES, TRACTION, SELF_CHECKS } from '../../lib/model';
+
+const phaseTone = (id: number) =>
+  id === 1 ? 'bg-[var(--color-info-soft)] text-[var(--color-info)]'
+  : id === 2 ? 'bg-[var(--color-accent-soft)] text-[var(--color-ink)]'
+  : id === 3 ? 'bg-[var(--color-warning-soft)] text-[var(--color-warning)]'
+  : 'bg-[var(--color-success-soft)] text-[var(--color-success)]';
+const pkgList = Object.values(PACKAGES).filter((p, i, a) => a.findIndex((x) => x.key === p.key) === i);
+---
+
+<Base title="Groeiscan · Vragen & logica — Dockwize">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur-md">
+      <div class="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 shrink-0"><a href="/"><DockwizeLogo size={24} suffix="Beheer" /></a></div>
+        <nav class="hidden sm:flex items-center gap-1 bg-[var(--color-surface-2)] rounded-full p-1">
+          <a href="/beheer" class="px-3.5 py-1.5 rounded-full text-[12.5px] font-medium text-[var(--color-ink-2)] hover:text-[var(--color-ink)] transition">Inzendingen</a>
+          <a href="/beheer/vragen" class="px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold bg-[var(--color-surface)] text-[var(--color-ink)] shadow-[var(--shadow-sm)]">Vragen &amp; logica</a>
+        </nav>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="/wizard" target="_blank" class="hidden sm:inline-flex items-center h-9 px-3.5 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface)] text-[12.5px] font-medium text-[var(--color-ink-2)] hover:bg-[var(--color-surface-2)] transition">Scan openen</a>
+          <a href="/" class="inline-flex items-center h-9 px-3.5 rounded-full bg-[var(--color-ink)] text-white text-[12.5px] font-semibold hover:-translate-y-px transition active:scale-95" style="transition-timing-function:var(--ease-out-quint);">Naar site</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-5 sm:px-8 py-8 sm:py-10">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-soft)] px-2.5 py-1 text-[11px] font-semibold text-[var(--color-ink)] mb-3">In ontwikkeling</div>
+          <h1 class="text-[26px] font-semibold tracking-tight text-[var(--color-ink)]">Vragen &amp; logica van de Groeiscan</h1>
+          <p class="mt-1.5 text-[14px] text-[var(--color-ink-2)] leading-relaxed">De scan is kort en vanuit de behoefte van de ondernemer: waar sta je, en waar wil je mee geholpen worden. Daaruit volgt een passend programma en de aanbevolen modules. De diepere fasering blijft input voor de coach bij de intake, niet voor de ondernemer zelf. De exacte vraagteksten worden nog vervangen door de Pitchlane-vragen.</p>
+        </div>
+        <a href="#toevoegen" class="inline-flex items-center gap-1.5 h-10 px-4 rounded-full bg-[var(--color-ink)] text-white text-[13px] font-semibold hover:-translate-y-px transition active:scale-95 shrink-0" style="transition-timing-function:var(--ease-out-quint);">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Behoefte toevoegen
+        </a>
+      </div>
+
+      <!-- Logica -->
+      <section class="mt-7 rounded-[18px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6 shadow-[var(--shadow-sm)]">
+        <h2 class="text-[15px] font-semibold tracking-tight text-[var(--color-ink)]">Hoe de scan werkt</h2>
+        <div class="mt-4 grid sm:grid-cols-2 gap-x-8 gap-y-4">
+          {[
+            ['Twee vragen', 'Stap 1: waar staat de ondernemer (situatie). Stap 2: waar wil hij of zij mee geholpen worden (behoeften, meerdere mogelijk).'],
+            ['Focus-fase', 'De eerste fundament-check (zelfcheck) die nog niet op “Ja” staat bepaalt waar de coach het beste kan starten — fundament eerst.'],
+            ['Fundament-mismatch', 'Plaatst de ondernemer zich verder dan waar nog basisbehoeften open staan, dan vlaggen we dat als aandachtspunt voor de intake.'],
+            ['Aanbevolen programma', 'Het Dockwize-pakket van de focus-fase (Explorer → Potential → Grow → Scale → Mature).'],
+            ['Aanbevolen modules', 'Komen rechtstreeks uit de gekozen behoeften en vormen de intake-brief voor de coach.'],
+            ['Doelgroep-inzicht', 'Alle gekozen behoeften worden geaggregeerd op /beheer: zo zie je waar de behoefte ligt en kun je dienstverlening, website en marketing daarop aanpassen.'],
+          ].map(([t, d]) => (
+            <div class="flex gap-3">
+              <span class="mt-1 shrink-0 w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span>
+              <div>
+                <p class="text-[13px] font-semibold text-[var(--color-ink)]">{t}</p>
+                <p class="text-[12.5px] text-[var(--color-ink-2)] leading-snug mt-0.5">{d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Stap 1: situaties -->
+      <section class="mt-8">
+        <h2 class="text-[16px] font-semibold tracking-tight text-[var(--color-ink)]">Stap 1 — Waar sta je nu?</h2>
+        <p class="mt-1 text-[12.5px] text-[var(--color-ink-3)]">Eén keuze. Bepaalt de zelf-inschatting.</p>
+        <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {SITUATIONS.map((s) => (
+            <div class="rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+              <span class={`text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${phaseTone(s.id)}`}>Fase {s.id} · {PHASE_PLAIN[s.id].label}</span>
+              <p class="mt-2 text-[13.5px] font-semibold text-[var(--color-ink)]">{s.label}</p>
+              <p class="text-[11.5px] text-[var(--color-ink-3)] mt-0.5">{s.sub}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Stap 2: bedrijfsbasics -->
+      <section class="mt-8">
+        <h2 class="text-[16px] font-semibold tracking-tight text-[var(--color-ink)]">Stap 2 — Bedrijfsbasics</h2>
+        <p class="mt-1 text-[12.5px] text-[var(--color-ink-3)]">Context voor de coach: teamgrootte en omzet/tractie.</p>
+        <div class="mt-4 grid sm:grid-cols-2 gap-3">
+          <div class="rounded-[14px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+            <p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-ink-3)]">Team</p>
+            <ul class="mt-1.5 space-y-1">{TEAM_SIZES.map((o) => <li class="text-[12.5px] text-[var(--color-ink-2)]">{o.label}</li>)}</ul>
+          </div>
+          <div class="rounded-[14px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+            <p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-ink-3)]">Omzet / tractie</p>
+            <ul class="mt-1.5 space-y-1.5">{TRACTION.map((o) => (
+              <li class="text-[12.5px] text-[var(--color-ink-2)] flex items-center gap-2"><span class={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${phaseTone(o.phase)}`}>F{o.phase}</span> {o.label}</li>
+            ))}</ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stap 3: behoeften -->
+      <section class="mt-8">
+        <h2 class="text-[16px] font-semibold tracking-tight text-[var(--color-ink)]">Stap 3 — Waar wil je mee geholpen worden?</h2>
+        <p class="mt-1 text-[12.5px] text-[var(--color-ink-3)]">Meerdere keuzes. Elke behoefte hoort bij een fase en bij Dockwize-modules.</p>
+        <div class="mt-4 space-y-2.5" id="needs-list">
+          {NEEDS.map((n) => (
+            <div class="rounded-[14px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+              <div class="flex items-start gap-3">
+                <span class={`shrink-0 mt-0.5 text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${phaseTone(n.phase)}`}>Fase {n.phase}</span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[13.5px] font-semibold text-[var(--color-ink)] leading-snug">{n.label}</p>
+                  <div class="mt-1.5 flex flex-wrap gap-1.5">
+                    {n.modules.map((m) => <span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink-3)]">{m}</span>)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div id="custom-needs" class="space-y-2.5"></div>
+        </div>
+      </section>
+
+      <!-- Stap 4: zelfcheck -->
+      <section class="mt-8">
+        <h2 class="text-[16px] font-semibold tracking-tight text-[var(--color-ink)]">Stap 4 — Korte zelfcheck (5 kernpunten)</h2>
+        <p class="mt-1 text-[12.5px] text-[var(--color-ink-3)]">Ja / Deels / Nog niet. Bepaalt de fase, de aandachtspunten en welke modules erbij horen.</p>
+        <div class="mt-4 space-y-2.5">
+          {SELF_CHECKS.map((c) => (
+            <div class="rounded-[14px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+              <div class="flex items-start gap-3">
+                <span class={`shrink-0 mt-0.5 text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${phaseTone(c.phase)}`}>Fase {c.phase}</span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[13.5px] font-semibold text-[var(--color-ink)] leading-snug">{c.statement}</p>
+                  <p class="mt-1 text-[11.5px] text-[var(--color-ink-3)]">Aandachtspunt: {c.focus} &middot; module: {c.module}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Programma's -->
+      <section class="mt-8">
+        <h2 class="text-[16px] font-semibold tracking-tight text-[var(--color-ink)]">Programma's per fase</h2>
+        <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {pkgList.map((p) => (
+            <div class="rounded-[14px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+              <div class="flex items-center gap-2"><h3 class="text-[16px] font-bold tracking-tight text-[var(--color-ink)]">{p.label}</h3><span class={`text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${phaseTone(p.phase)}`}>Fase {p.phase}</span></div>
+              <p class="mt-1.5 text-[12.5px] font-medium text-[var(--color-ink-2)]">{p.tagline}</p>
+              <p class="mt-1 text-[12px] text-[var(--color-ink-3)] leading-snug">{p.focus}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Behoefte toevoegen -->
+      <section id="toevoegen" class="mt-9 scroll-mt-20">
+        <div class="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-7 shadow-[var(--shadow-sm)]">
+          <h2 class="text-[18px] font-semibold tracking-tight text-[var(--color-ink)]">Concept-behoefte toevoegen</h2>
+          <p class="mt-1 text-[13px] text-[var(--color-ink-2)] leading-relaxed max-w-2xl">Mis je een behoefte die ondernemers vaak noemen? Voeg 'm hier toe. Hij wordt lokaal bewaard en verschijnt hierboven met een “concept”-label, zodat je het rijtje kunt verfijnen voordat het in code gaat.</p>
+          <div class="mt-5 grid sm:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-[12px] font-medium text-[var(--color-ink-2)]">Fase</span>
+              <select id="q-phase" class="mt-1 w-full h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] text-[var(--color-ink)] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition">
+                {PHASES.map((p) => <option value={p.id}>Fase {p.id} — {p.name}</option>)}
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-[12px] font-medium text-[var(--color-ink-2)]">Modules (komma-gescheiden)</span>
+              <input id="q-modules" type="text" placeholder="bijv. Pricing, Verdienmodel" class="mt-1 w-full h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" />
+            </label>
+            <label class="block sm:col-span-2">
+              <span class="text-[12px] font-medium text-[var(--color-ink-2)]">Behoefte (zoals de ondernemer 'm herkent)</span>
+              <input id="q-label" type="text" placeholder="Ik wil ..." class="mt-1 w-full h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" />
+            </label>
+          </div>
+          <div class="mt-4 flex items-center gap-3">
+            <button id="q-add" class="inline-flex items-center gap-1.5 h-10 px-5 rounded-full bg-[var(--color-ink)] text-white text-[13px] font-semibold transition active:scale-[0.98]" style="transition-timing-function:var(--ease-out-quint);">Toevoegen</button>
+            <p id="q-msg" class="text-[12.5px] text-[var(--color-ink-3)]"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    import { getCustomQuestions, addCustomQuestion, deleteCustomQuestion } from '../../lib/store';
+    const esc = (s: string) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+    const tone = (id: number) => id === 1 ? 'bg-[var(--color-info-soft)] text-[var(--color-info)]' : id === 2 ? 'bg-[var(--color-accent-soft)] text-[var(--color-ink)]' : id === 3 ? 'bg-[var(--color-warning-soft)] text-[var(--color-warning)]' : 'bg-[var(--color-success-soft)] text-[var(--color-success)]';
+
+    function renderCustom() {
+      const items = getCustomQuestions();
+      const el = document.getElementById('custom-needs')!;
+      el.innerHTML = items.map((q) => `
+        <div class="rounded-[14px] border border-dashed border-[var(--color-accent)] bg-[var(--color-accent-soft)]/30 p-4">
+          <div class="flex items-start gap-3">
+            <span class="shrink-0 mt-0.5 text-[10.5px] px-2 py-0.5 rounded-full font-semibold bg-[var(--color-ink)] text-white">Fase ${q.phase} · concept</span>
+            <div class="min-w-0 flex-1">
+              <p class="text-[13.5px] font-semibold text-[var(--color-ink)] leading-snug">${esc(q.short)}</p>
+              ${q.statement ? `<div class="mt-1.5 flex flex-wrap gap-1.5">${q.statement.split(',').map((m) => `<span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink-3)]">${esc(m.trim())}</span>`).join('')}</div>` : ''}
+            </div>
+            <button data-del="${q.id}" class="shrink-0 text-[11.5px] text-[var(--color-ink-3)] hover:text-[var(--color-danger)] transition">Verwijder</button>
+          </div>
+        </div>`).join('');
+      el.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => { deleteCustomQuestion((b as HTMLElement).dataset.del!); renderCustom(); }));
+    }
+
+    const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+    document.getElementById('q-add')?.addEventListener('click', () => {
+      const phase = Number($('q-phase').value) as 1 | 2 | 3 | 4;
+      const label = $('q-label').value.trim();
+      const modules = $('q-modules').value.trim();
+      const msg = document.getElementById('q-msg')!;
+      if (label.length < 4) { msg.textContent = 'Vul een herkenbare behoefte in.'; msg.style.color = 'var(--color-danger)'; return; }
+      addCustomQuestion({ phase, short: label, statement: modules, definition: '' });
+      $('q-label').value = ''; $('q-modules').value = '';
+      msg.textContent = 'Toegevoegd aan fase ' + phase + '.'; msg.style.color = 'var(--color-success)';
+      renderCustom();
+    });
+    renderCustom();
+  </script>
+</Base>

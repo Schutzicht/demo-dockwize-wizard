@@ -1,0 +1,204 @@
+---
+import Base from '../layouts/Base.astro';
+import DockwizeLogo from '../components/DockwizeLogo.astro';
+---
+
+<Base title="Groeiscan · Inzendingen — Dockwize">
+  <div class="min-h-screen">
+    <!-- Topbar -->
+    <header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur-md">
+      <div class="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 shrink-0">
+          <a href="/"><DockwizeLogo size={24} suffix="Beheer" /></a>
+        </div>
+        <nav class="hidden sm:flex items-center gap-1 bg-[var(--color-surface-2)] rounded-full p-1">
+          <a href="/beheer" class="px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold bg-[var(--color-surface)] text-[var(--color-ink)] shadow-[var(--shadow-sm)]">Inzendingen</a>
+          <a href="/beheer/vragen" class="px-3.5 py-1.5 rounded-full text-[12.5px] font-medium text-[var(--color-ink-2)] hover:text-[var(--color-ink)] transition">Vragen &amp; logica</a>
+        </nav>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="export" class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface)] text-[12.5px] font-medium text-[var(--color-ink-2)] hover:bg-[var(--color-surface-2)] transition active:scale-95">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+            Export CSV
+          </button>
+          <a href="/" class="inline-flex items-center h-9 px-3.5 rounded-full bg-[var(--color-ink)] text-white text-[12.5px] font-semibold hover:-translate-y-px transition active:scale-95" style="transition-timing-function:var(--ease-out-quint);">Naar site</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-5 sm:px-8 py-8 sm:py-10">
+      <div class="flex items-end justify-between gap-4 flex-wrap">
+        <div>
+          <h1 class="text-[26px] font-semibold tracking-tight text-[var(--color-ink)]">Inzendingen Groeiscan</h1>
+          <p class="mt-1 text-[14px] text-[var(--color-ink-2)]">Iedereen die de scan invult, verschijnt hier — inclusief fase, openstaande stappen en e-mailadres.</p>
+        </div>
+        <button id="clear" class="text-[12.5px] text-[var(--color-ink-3)] hover:text-[var(--color-danger)] transition">Alles wissen</button>
+      </div>
+
+      <!-- Stats -->
+      <div id="stats" class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+
+      <!-- Behoefte-aggregaat -->
+      <div id="needs-agg" class="mt-6"></div>
+
+      <!-- List -->
+      <div id="list" class="mt-6 space-y-3"></div>
+    </main>
+  </div>
+
+  <script>
+    import { getSubmissions, deleteSubmission, clearSubmissions, type Submission } from '../lib/store';
+
+    const phaseTone = (id: number) =>
+      id === 1 ? 'bg-[var(--color-info-soft)] text-[var(--color-info)]'
+      : id === 2 ? 'bg-[var(--color-accent-soft)] text-[var(--color-ink)]'
+      : id === 3 ? 'bg-[var(--color-warning-soft)] text-[var(--color-warning)]'
+      : 'bg-[var(--color-success-soft)] text-[var(--color-success)]';
+
+    const fmtDate = (iso: string) => {
+      const d = new Date(iso);
+      return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' }) +
+        ' · ' + d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+    };
+    const esc = (s: string) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+    function statCard(value: string | number, label: string, accent = false) {
+      return `<div class="rounded-2xl border border-[var(--color-border)] ${accent ? 'bg-[var(--color-ink)] text-white' : 'bg-[var(--color-surface)]'} px-4 py-4 shadow-[var(--shadow-sm)]">
+        <p class="text-[26px] font-semibold tracking-tight ${accent ? 'text-white' : 'text-[var(--color-ink)]'}">${value}</p>
+        <p class="text-[12px] mt-0.5 ${accent ? 'text-white/60' : 'text-[var(--color-ink-3)]'}">${label}</p>
+      </div>`;
+    }
+
+    function render() {
+      const subs = getSubmissions();
+      const statsEl = document.getElementById('stats')!;
+      const listEl = document.getElementById('list')!;
+      const aggEl = document.getElementById('needs-agg')!;
+
+      const needCounts: Record<string, number> = {};
+      subs.forEach((s) => (s.needLabels || []).forEach((l) => { needCounts[l] = (needCounts[l] || 0) + 1; }));
+      const needsSorted = Object.entries(needCounts).sort((a, b) => b[1] - a[1]);
+      const mismatchCount = subs.filter((s) => s.result.mismatch).length;
+      const phaseCounts = [1, 2, 3, 4].map((p) => subs.filter((s) => s.result.focusPhase === p).length);
+      const topPhase = phaseCounts.indexOf(Math.max(...phaseCounts)) + 1;
+      const topNeed = needsSorted.length ? needsSorted[0][0] : '';
+
+      statsEl.innerHTML =
+        statCard(subs.length, 'inzendingen', true) +
+        statCard(subs.length ? topNeed.split(' ').slice(0, 3).join(' ') + (topNeed.split(' ').length > 3 ? '…' : '') : '—', 'meest gevraagd') +
+        statCard(subs.length ? 'Fase ' + topPhase : '—', 'meest voorkomende focus') +
+        statCard(mismatchCount, 'fundament-mismatch');
+
+      if (subs.length && needsSorted.length) {
+        const max = needsSorted[0][1];
+        aggEl.innerHTML = `<div class="rounded-[18px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-sm)]">
+          <h2 class="text-[14px] font-semibold tracking-tight text-[var(--color-ink)]">Waar zit de behoefte van de doelgroep?</h2>
+          <p class="text-[12.5px] text-[var(--color-ink-3)] mt-0.5">Wat ondernemers het vaakst aanvinken — input voor je dienstverlening, website en marketing.</p>
+          <div class="mt-3.5 space-y-2">${needsSorted.map(([label, n]) => `<div class="flex items-center gap-3">
+            <div class="w-40 sm:w-56 shrink-0 text-[12px] text-[var(--color-ink-2)] leading-tight">${esc(label)}</div>
+            <div class="flex-1 h-2.5 rounded-full bg-[var(--color-surface-2)] overflow-hidden"><div class="h-full rounded-full bg-[var(--color-accent)]" style="width:${Math.round((n / max) * 100)}%"></div></div>
+            <div class="w-6 text-right text-[12px] font-semibold text-[var(--color-ink)]">${n}</div>
+          </div>`).join('')}</div>
+        </div>`;
+      } else {
+        aggEl.innerHTML = '';
+      }
+
+      if (!subs.length) {
+        listEl.innerHTML = `<div class="rounded-[18px] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface)] p-10 text-center">
+          <p class="text-[15px] font-medium text-[var(--color-ink)]">Nog geen inzendingen</p>
+          <p class="mt-1.5 text-[13.5px] text-[var(--color-ink-3)] max-w-sm mx-auto">Vul de Groeiscan in via de knop rechtsonder op de <a href="/" class="underline hover:text-[var(--color-ink)]">homepage</a>. De inzending verschijnt dan hier.</p>
+        </div>`;
+        return;
+      }
+
+      listEl.innerHTML = subs.map((s) => {
+        const r = s.result;
+        const modules = r.recommendedModules || [];
+        return `<details class="group rounded-[18px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)] overflow-hidden">
+          <summary class="list-none cursor-pointer px-5 py-4 flex items-center gap-4 hover:bg-[var(--color-surface-2)]/50 transition">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-[14.5px] font-semibold text-[var(--color-ink)] truncate">${esc(s.contact.name) || 'Onbekend'}</span>
+                ${s.contact.company ? `<span class="text-[12.5px] text-[var(--color-ink-3)] truncate">· ${esc(s.contact.company)}</span>` : ''}
+              </div>
+              <div class="mt-0.5 flex items-center gap-2 text-[12.5px] text-[var(--color-ink-3)]">
+                <a href="mailto:${esc(s.contact.email)}" class="hover:text-[var(--color-ink)] transition truncate" onclick="event.stopPropagation()">${esc(s.contact.email)}</a>
+                <span>·</span><span>${fmtDate(s.createdAt)}</span>
+              </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 shrink-0">
+              ${r.mismatch ? `<span class="text-[11px] px-2 py-1 rounded-full bg-[var(--color-warning-soft)] text-[var(--color-warning)] font-medium">fundament-check</span>` : ''}
+              <span class="text-[11.5px] px-2.5 py-1 rounded-full font-semibold ${phaseTone(r.focusPhase)}">Fase ${r.focusPhase} · ${esc(r.recommendedPackage)}</span>
+            </div>
+            <svg class="shrink-0 text-[var(--color-ink-3)] transition group-open:rotate-180" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 pt-1 border-t border-[var(--color-border)]">
+            <div class="mt-3 flex items-center justify-between gap-3 flex-wrap">
+              <p class="text-[10.5px] uppercase tracking-[0.14em] font-bold text-[var(--color-ink-3)]">Intake-brief voor de coach</p>
+              ${(s.team || s.traction) ? `<p class="text-[11.5px] text-[var(--color-ink-3)]">${esc(s.team || '')}${s.team && s.traction ? ' · ' : ''}${esc(s.traction || '')}</p>` : ''}
+            </div>
+
+            <div class="mt-2.5 grid sm:grid-cols-2 gap-4">
+              <div>
+                <p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-ink-3)]">Behoeften van de ondernemer</p>
+                ${s.needLabels && s.needLabels.length ? `<ul class="mt-1.5 space-y-1">${s.needLabels.map((l) => `<li class="text-[12.5px] text-[var(--color-ink-2)] leading-snug">• ${esc(l)}</li>`).join('')}</ul>` : `<p class="mt-1.5 text-[12.5px] text-[var(--color-ink-3)]">—</p>`}
+              </div>
+              <div>
+                <p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-ink-3)]">Aanbevolen modules</p>
+                ${modules.length ? `<div class="mt-1.5 flex flex-wrap gap-1.5">${modules.map((m) => `<span class="text-[11px] px-2 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink-2)]">${esc(m)}</span>`).join('')}</div>` : `<p class="mt-1.5 text-[12.5px] text-[var(--color-ink-3)]">—</p>`}
+              </div>
+            </div>
+
+            <div class="mt-4 grid sm:grid-cols-2 gap-4">
+              <div>
+                <p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-success)]">Al op orde</p>
+                ${(r.strengths && r.strengths.length) ? `<ul class="mt-1.5 space-y-1">${r.strengths.map((g) => `<li class="text-[12.5px] text-[var(--color-ink-2)]">${esc(g)}</li>`).join('')}</ul>` : `<p class="mt-1.5 text-[12.5px] text-[var(--color-ink-3)]">—</p>`}
+              </div>
+              <div>
+                <p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-warning)]">Aandachtspunten (checks open)</p>
+                ${(r.gaps && r.gaps.length) ? `<ul class="mt-1.5 space-y-1">${r.gaps.map((g) => `<li class="text-[12.5px] text-[var(--color-ink-2)]">${esc(g)}</li>`).join('')}</ul>` : `<p class="mt-1.5 text-[12.5px] text-[var(--color-ink-3)]">Geen, alles op orde.</p>`}
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl bg-[var(--color-surface-2)] px-4 py-3">
+              <p class="text-[12.5px] text-[var(--color-ink-2)] leading-snug">${esc(r.coachNote)}</p>
+            </div>
+
+            ${s.challenge ? `<div class="mt-3"><p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-ink-3)]">Grootste uitdaging (eigen woorden)</p><p class="mt-1 text-[12.5px] text-[var(--color-ink-2)] leading-snug italic-none">“${esc(s.challenge)}”</p></div>` : ''}
+
+            <div class="mt-5 flex items-center gap-3">
+              <a href="mailto:${esc(s.contact.email)}?subject=Je%20Dockwize%20Groeiscan" class="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-[var(--color-ink)] text-white text-[12.5px] font-semibold transition active:scale-95">Mail ${esc(s.contact.name.split(' ')[0] || '')}</a>
+              <button data-del="${s.id}" class="ml-auto text-[12px] text-[var(--color-ink-3)] hover:text-[var(--color-danger)] transition">Verwijder</button>
+            </div>
+          </div>
+        </details>`;
+      }).join('');
+
+      listEl.querySelectorAll('[data-del]').forEach((b) =>
+        b.addEventListener('click', () => { deleteSubmission((b as HTMLElement).dataset.del!); render(); }));
+    }
+
+    function exportCsv() {
+      const subs = getSubmissions();
+      if (!subs.length) return;
+      const rows = [['Datum', 'Naam', 'Bedrijf', 'E-mail', 'Situatie (fase)', 'Focus-fase', 'Pakket', 'Behoeften', 'Aanbevolen modules', 'Uitdaging', 'Mismatch']];
+      subs.forEach((s) => rows.push([
+        s.createdAt, s.contact.name, s.contact.company, s.contact.email,
+        String(s.situation ?? ''), String(s.result.focusPhase), s.result.recommendedPackage,
+        (s.needLabels || []).join('; '), (s.result.recommendedModules || []).join('; '),
+        s.challenge || '', s.result.mismatch ? 'ja' : 'nee',
+      ]));
+      const csv = rows.map((r) => r.map((c) => `"${(c || '').replace(/"/g, '""')}"`).join(',')).join('\n');
+      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      const a = document.createElement('a');
+      a.href = url; a.download = 'groeiscan-inzendingen.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('export')?.addEventListener('click', exportCsv);
+    document.getElementById('clear')?.addEventListener('click', () => {
+      if (confirm('Alle inzendingen wissen? Dit kan niet ongedaan worden gemaakt.')) { clearSubmissions(); render(); }
+    });
+    render();
+  </script>
+</Base>

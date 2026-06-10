@@ -1,0 +1,574 @@
+---
+/**
+ * Dockwize Groeiscan — drijvende CTA (rechtsonder) die een slide-over wizard opent.
+ * Zelfstandig en herbruikbaar: plak <GroeiscanWidget /> op elke pagina van de site.
+ */
+interface Props {
+  contactUrl?: string;
+  autoTeaser?: boolean; // toont na korte tijd eenmalig een tekstballon bij de knop
+}
+const { contactUrl = '#contact', autoTeaser = true } = Astro.props;
+---
+
+<div id="dwq" data-contact={contactUrl} data-teaser={autoTeaser ? '1' : '0'}>
+  <!-- Launcher -->
+  <button id="dwq-launch" type="button" data-dwq-open aria-haspopup="dialog" aria-controls="dwq-panel"
+    class="group fixed z-[60] bottom-5 right-5 sm:bottom-6 sm:right-6 flex items-center gap-3 rounded-full bg-[var(--color-ink)] text-white pl-2 pr-5 py-2 shadow-[var(--shadow-xl)] ring-1 ring-black/5 transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 active:scale-[0.97]"
+    style="transition-timing-function: var(--ease-out-quint);">
+    <span class="relative grid place-items-center w-10 h-10 rounded-full bg-[var(--color-accent)]">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1d1b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>
+      </svg>
+      <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--color-accent)] ring-2 ring-[var(--color-ink)]"></span>
+    </span>
+    <span class="flex flex-col items-start leading-tight text-left">
+      <span class="text-[13px] font-semibold tracking-tight">Doe de Groeiscan</span>
+      <span class="hidden xs:block text-[11px] text-white/55">In welke fase zit je bedrijf?</span>
+    </span>
+  </button>
+
+  <!-- Teaser bubble -->
+  <div id="dwq-teaser" class="fixed z-[59] bottom-[84px] right-5 sm:right-6 max-w-[230px] opacity-0 pointer-events-none transition-all duration-500 hidden"
+    style="transform: translateY(8px); transition-timing-function: var(--ease-out-quint);">
+    <div data-dwq-open class="relative rounded-2xl bg-white shadow-[var(--shadow-lg)] ring-1 ring-black/5 px-4 py-3 cursor-pointer">
+      <button id="dwq-teaser-x" aria-label="Sluiten" class="absolute top-2 right-2 text-[var(--color-muted)] hover:text-[var(--color-ink)] transition">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <p class="text-[12.5px] leading-snug text-[var(--color-ink-2)] pr-3">Benieuwd of je bedrijf klaar is voor de volgende stap? <span class="text-[var(--color-ink)] font-medium">Ontdek het in 2 minuten.</span></p>
+      <span class="absolute -bottom-1.5 right-8 w-3 h-3 bg-white rotate-45 ring-1 ring-black/5"></span>
+    </div>
+  </div>
+
+  <!-- Overlay + panel -->
+  <div id="dwq-overlay" class="fixed inset-0 z-[70] hidden">
+    <div id="dwq-backdrop" class="absolute inset-0 bg-[var(--color-ink)]/35 opacity-0 transition-opacity duration-300 backdrop-blur-[2px]"></div>
+    <aside id="dwq-panel" role="dialog" aria-modal="true" aria-label="Dockwize Groeiscan" tabindex="-1"
+      class="absolute left-1/2 top-1/2 w-[calc(100%-2rem)] sm:w-[480px] max-h-[88dvh] bg-[var(--color-bg)] rounded-[24px] shadow-[var(--shadow-xl)] flex flex-col overflow-hidden outline-none"
+      style="transform: translate(-50%, -50%) scale(0.96); opacity: 0; transition: transform 340ms var(--ease-out-quint), opacity 300ms var(--ease-out-quint);">
+      <!-- Header -->
+      <header class="shrink-0 px-5 pt-4 pb-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur">
+        <div class="flex items-center justify-between">
+          <a href="/" class="shrink-0"><div id="dwq-logo"></div></a>
+          <button id="dwq-close" aria-label="Sluiten" class="grid place-items-center w-9 h-9 rounded-full text-[var(--color-ink-3)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-ink)] transition active:scale-95">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <div id="dwq-stepper" class="mt-3 hidden">
+          <div class="flex items-center justify-between text-[11px] text-[var(--color-ink-3)] mb-1.5">
+            <span id="dwq-stepper-label">Stap 1 van 7</span>
+            <span id="dwq-stepper-pct">14%</span>
+          </div>
+          <div class="h-1.5 rounded-full bg-[var(--color-surface-2)] overflow-hidden">
+            <div id="dwq-bar" class="h-full rounded-full bg-[var(--color-accent)] transition-[width] duration-500" style="width:0%;transition-timing-function:var(--ease-out-quint);"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Body -->
+      <div id="dwq-body" class="flex-1 min-h-0 overflow-y-auto scrollbar-thin px-5 py-5"></div>
+
+      <!-- Footer -->
+      <footer id="dwq-footer" class="shrink-0 px-5 py-3.5 border-t border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur"></footer>
+    </aside>
+  </div>
+</div>
+
+<script>
+  import { PHASES, SITUATIONS, NEEDS, PHASE_PLAIN, TEAM_SIZES, TRACTION, SELF_CHECKS, ANSWER_OPTIONS } from '../lib/model';
+  import { analyzeNeeds, type NeedsAnswers, type NeedsResult, type Score } from '../lib/analysis';
+  import { buildSubmission, submitSubmission, type Contact } from '../lib/store';
+
+  const $ = (sel: string, root: ParentNode = document) => root.querySelector(sel) as HTMLElement | null;
+
+  const logoSvg = `<svg viewBox="0 0 144.118 50" height="22" class="w-auto" aria-label="Dockwize"><g transform="translate(-211.9 -391.4)"><g transform="translate(211.9 392.072)"><path fill="#1d1d1b" d="M220.724,415.121c6.555,0,11.008-4.622,11.008-11.513a11.128,11.128,0,0,0-2.941-7.983,10.838,10.838,0,0,0-7.9-3.025H211.9v22.437l8.824.084Zm-3.277-4.622V397.138h3.193a5.2,5.2,0,0,1,4.286,1.933,7.382,7.382,0,0,1,1.345,4.454,8.762,8.762,0,0,1-1.345,5.042,4.988,4.988,0,0,1-4.286,1.933h-3.193Z" transform="translate(-211.9 -392.264)"/><path fill="#1d1d1b" d="M258.749,403.713a11.972,11.972,0,0,0-2.941-8.319,10.255,10.255,0,0,0-7.815-3.193h0c-6.639,0-11.092,4.622-11.092,11.513a12.213,12.213,0,0,0,2.689,8.151,10.387,10.387,0,0,0,8.067,3.361h0a10.408,10.408,0,0,0,8.235-3.445A11.664,11.664,0,0,0,258.749,403.713Zm-6.807,5.042a4.589,4.589,0,0,1-4.034,2.017h0c-3.361,0-5.294-2.605-5.294-7.059a8.484,8.484,0,0,1,1.26-4.958,4.507,4.507,0,0,1,3.95-1.849h0a4.722,4.722,0,0,1,4.034,1.933,8.667,8.667,0,0,1,1.261,4.958A8.856,8.856,0,0,1,251.942,408.755Z" transform="translate(-215.892 -392.2)"/><path fill="#1d1d1b" d="M274.82,415.409h0c5.21,0,8.739-2.689,9.748-7.311l.084-.5H279.19l-.084.252a3.954,3.954,0,0,1-4.034,3.025h0c-4.622,0-5.126-5.042-5.126-7.143a9.4,9.4,0,0,1,1.176-4.958,4.166,4.166,0,0,1,3.782-2.017h0a3.9,3.9,0,0,1,4.2,3.025l.084.252h5.462l-.084-.42c-.5-3.529-3.277-7.311-9.5-7.311h0a10.115,10.115,0,0,0-8.067,3.529,12.962,12.962,0,0,0-2.605,8.151,12.389,12.389,0,0,0,2.605,8.067A9.617,9.617,0,0,0,274.82,415.409Z" transform="translate(-220.282 -392.216)"/><path fill="#1d1d1b" d="M296.278,407.49l1.849-1.765,6.471,9.412h6.555l-9.244-13.025,9.16-9.412h-6.723l-.084.168c-1.345,1.513-3.025,3.361-4.622,5.126-1.26,1.429-2.521,2.773-3.361,3.782V392.7H290.9v22.437h5.378Z" transform="translate(-224.513 -392.28)"/><path fill="#1d1d1b" d="M236.57,423.552c-.168.756-.42,1.849-.756,3.109-.84,3.445-1.933,7.983-2.521,11.513-1.008-4.79-2.941-12.185-3.613-14.622l-.084-.252h-4.79l-.084.252c-.5,2.1-1.176,4.622-1.765,7.059-.672,2.773-1.429,5.546-1.933,7.815-.42-2.353-1.176-6.05-2.437-12.269L218,423.3h-5.8l5.714,22.437h5.462l.336-1.26c1.008-3.782,2.437-9.16,3.277-12.857.5,2.1,1.176,4.79,1.849,7.395.588,2.269,1.176,4.538,1.6,6.471l.084.336h5.462l6.134-22.437h-5.378Z" transform="translate(-211.948 -397.166)"/><rect fill="#1d1d1b" width="5.462" height="22.437" transform="translate(31.849 26.134)"/><path fill="#1d1d1b" d="M276.7,427.754l.168-.168V423.3H259.388v4.622h10.924L258.8,441.787v3.95h17.983l.672-4.622H265.775Z" transform="translate(-219.388 -397.166)"/><path fill="#1d1d1b" d="M288.678,436.409h10.336v-4.622H288.678v-3.866h10.84V423.3H283.3v22.437h16.219l.588-4.622H288.678Z" transform="translate(-223.3 -397.166)"/><path fill="#1d1d1b" d="M309.677,442.2a3.277,3.277,0,1,0,0,6.555,3.277,3.277,0,0,0,0-6.555Z" transform="translate(-226.988 -400.183)"/></g><path fill="#ffda00" d="M348.682,391.4H322.8v50h25.882a25,25,0,1,0,0-50Zm-.084,37.479h-5.042l-8.319,8.319V403.837H348.6a12.521,12.521,0,1,1,0,25.042Z" transform="translate(-17.707 0)"/><g transform="translate(321.732 415.182)"><path fill="#1d1d1b" d="M351.049,423.4a1.849,1.849,0,1,0-1.849-1.849A1.865,1.865,0,0,0,351.049,423.4Z" transform="translate(-343.654 -419.7)"/><ellipse fill="#1d1d1b" cx="1.849" cy="1.849" rx="1.849" ry="1.849"/><ellipse fill="#1d1d1b" cx="1.849" cy="1.849" rx="1.849" ry="1.849" transform="translate(11.092 0)"/></g></g></svg>`;
+
+  const ICON = {
+    arrow: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    back: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>',
+    check: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+    alert: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>',
+    spark: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>',
+    target: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>',
+  };
+
+  // ---- State ----
+  const FORM_STEPS = ['situation', 'business', 'needs', 'selfcheck', 'contact'] as const;
+  type StepKey = 'intro' | typeof FORM_STEPS[number] | 'result';
+  const FLOW: StepKey[] = ['intro', ...FORM_STEPS, 'result'];
+
+  const answers: NeedsAnswers = { situation: null, team: '', traction: '', needs: [], selfChecks: {}, challenge: '' };
+  const contact: Contact = { name: '', email: '', company: '', phone: '', consent: false };
+  let stepKey: StepKey = 'intro';
+  let result: NeedsResult | null = null;
+  let opened = false;
+
+  const root = $('#dwq')!;
+  const overlay = $('#dwq-overlay')!;
+  const backdrop = $('#dwq-backdrop')!;
+  const panel = $('#dwq-panel')!;
+  const body = $('#dwq-body')!;
+  const footer = $('#dwq-footer')!;
+  const stepper = $('#dwq-stepper')!;
+  const bar = $('#dwq-bar')!;
+  const contactUrl = root.dataset.contact || '#contact';
+  $('#dwq-logo')!.innerHTML = logoSvg;
+
+  // ---- Open / close ----
+  function open() {
+    opened = true;
+    overlay.classList.remove('hidden');
+    dismissTeaser();
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      backdrop.style.opacity = '1';
+      panel.style.transform = 'translate(-50%, -50%) scale(1)';
+      panel.style.opacity = '1';
+    });
+    if (stepKey === 'intro' && !result) render();
+    setTimeout(() => panel.focus(), 60);
+  }
+  function close() {
+    opened = false;
+    backdrop.style.opacity = '0';
+    panel.style.transform = 'translate(-50%, -50%) scale(0.96)';
+    panel.style.opacity = '0';
+    document.body.style.overflow = '';
+    setTimeout(() => overlay.classList.add('hidden'), 360);
+  }
+  // Robuust: één gedelegeerde listener op document. Elke knop met [data-dwq-open]
+  // (launcher, teaser, of een CTA ergens anders op de site) opent zo de scan,
+  // ongeacht wanneer die in de DOM komt.
+  document.addEventListener('click', (e) => {
+    const el = e.target as Element | null;
+    if (el && typeof el.closest === 'function' && el.closest('[data-dwq-open]')) {
+      e.preventDefault();
+      open();
+    }
+  });
+  $('#dwq-close')!.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && opened) close(); });
+
+  // ---- Teaser ----
+  function dismissTeaser() {
+    const t = $('#dwq-teaser')!;
+    t.style.opacity = '0';
+    t.style.pointerEvents = 'none';
+    setTimeout(() => t.classList.add('hidden'), 500);
+  }
+  if (root.dataset.teaser === '1' && !sessionStorage.getItem('dwq_teaser_seen')) {
+    setTimeout(() => {
+      if (opened) return;
+      const t = $('#dwq-teaser')!;
+      t.classList.remove('hidden');
+      requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateY(0)'; t.style.pointerEvents = 'auto'; });
+      sessionStorage.setItem('dwq_teaser_seen', '1');
+    }, 3200);
+  }
+  $('#dwq-teaser-x')!.addEventListener('click', (e) => { e.stopPropagation(); dismissTeaser(); });
+
+  // ---- Stappen (behoefte-gestuurd) ----
+  function segmented(group: string, value: Score | undefined): string {
+    return `<div class="grid grid-cols-3 gap-1.5">${ANSWER_OPTIONS.map((o) => {
+      const active = value === o.value;
+      return `<button type="button" data-opt="${o.value}" data-group="${group}"
+        class="dwq-opt h-9 rounded-lg text-[12.5px] font-medium border transition active:scale-[0.97] ${active
+          ? 'bg-[var(--color-ink)] text-white border-[var(--color-ink)]'
+          : 'bg-[var(--color-surface)] text-[var(--color-ink-2)] border-[var(--color-border)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-2)]'}"
+        style="transition-timing-function:var(--ease-out-quint);">${o.label}</button>`;
+    }).join('')}</div>`;
+  }
+  function questionCard(group: string, statement: string, value: Score | undefined): string {
+    return `<div class="rounded-[14px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+      <p class="text-[13.5px] leading-snug text-[var(--color-ink)] text-pretty">${statement}</p>
+      <div class="mt-3">${segmented(group, value)}</div>
+    </div>`;
+  }
+  function pickRow(group: string, value: string, label: string, sub: string | undefined, active: boolean): string {
+    return `<button type="button" data-pick="${group}" data-val="${value}"
+      class="dwq-pick w-full text-left rounded-[12px] border p-3.5 flex items-center justify-between gap-3 transition active:scale-[0.99] ${active
+        ? 'border-[var(--color-ink)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)] ring-1 ring-[var(--color-ink)]'
+        : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-border-strong)]'}"
+      style="transition-timing-function:var(--ease-out-quint);">
+      <div><span class="text-[13.5px] font-semibold text-[var(--color-ink)]">${label}</span>${sub ? `<span class="block text-[11.5px] text-[var(--color-ink-3)]">${sub}</span>` : ''}</div>
+      <span class="shrink-0 grid place-items-center w-5 h-5 rounded-full border ${active ? 'bg-[var(--color-ink)] border-[var(--color-ink)] text-[var(--color-accent)]' : 'border-[var(--color-border-strong)] text-transparent'}">${ICON.check}</span>
+    </button>`;
+  }
+
+  function renderIntro(): string {
+    return `<div class="dwq-anim">
+      <div class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[11px] font-semibold text-[var(--color-ink)] mb-4">${ICON.spark} Gratis groeiscan</div>
+      <h2 class="text-[24px] leading-[1.12] font-semibold tracking-tight text-[var(--color-ink)] text-balance">Waar wil je met je bedrijf naartoe?</h2>
+      <p class="mt-3 text-[13.5px] leading-relaxed text-[var(--color-ink-2)]">Een paar korte vragen over waar je staat, hoe je bedrijf ervoor staat en waar je mee geholpen wilt worden. Je krijgt meteen een passend Dockwize-programma, en een coach denkt met je mee.</p>
+      <div class="mt-5 space-y-2.5">
+        ${[
+          ['Vertel waar je staat', 'Van idee tot opschalen'],
+          ['Kies waar je hulp bij wilt', 'In je eigen woorden'],
+          ['Krijg een concreet vervolg', 'Een passend programma plus persoonlijk gesprek'],
+        ].map(([t, s]) => `<div class="flex items-start gap-3">
+          <span class="mt-0.5 shrink-0 grid place-items-center w-5 h-5 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]">${ICON.check}</span>
+          <div><p class="text-[13.5px] font-medium text-[var(--color-ink)]">${t}</p><p class="text-[12px] text-[var(--color-ink-3)]">${s}</p></div>
+        </div>`).join('')}
+      </div>
+      <p class="mt-5 text-[11.5px] text-[var(--color-ink-3)] flex items-center gap-1.5"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Duurt ongeveer 2 minuten</p>
+    </div>`;
+  }
+
+  function renderSituation(): string {
+    return `<div class="dwq-anim">
+      <h3 class="text-[20px] font-semibold tracking-tight text-[var(--color-ink)]">Waar sta je nu met je bedrijf?</h3>
+      <p class="mt-1 text-[13px] text-[var(--color-ink-2)]">Kies wat het best past. Geen goed of fout.</p>
+      <div class="mt-4 space-y-2.5">
+        ${SITUATIONS.map((c) => {
+          const active = answers.situation === c.id;
+          return `<button type="button" data-situation="${c.id}"
+            class="dwq-pick w-full text-left rounded-[14px] border p-4 transition active:scale-[0.99] ${active
+              ? 'border-[var(--color-ink)] bg-[var(--color-surface)] shadow-[var(--shadow-md)] ring-1 ring-[var(--color-ink)]'
+              : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-border-strong)]'}"
+            style="transition-timing-function:var(--ease-out-quint);">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <p class="text-[14.5px] font-semibold text-[var(--color-ink)]">${c.label}</p>
+                <p class="text-[12px] text-[var(--color-ink-3)] mt-0.5">${c.sub}</p>
+              </div>
+              <span class="shrink-0 grid place-items-center w-5 h-5 rounded-full border ${active ? 'bg-[var(--color-ink)] border-[var(--color-ink)] text-[var(--color-accent)]' : 'border-[var(--color-border-strong)] text-transparent'}">${ICON.check}</span>
+            </div>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  function renderNeeds(): string {
+    return `<div class="dwq-anim">
+      <h3 class="text-[20px] font-semibold tracking-tight text-[var(--color-ink)]">Waar wil je mee geholpen worden?</h3>
+      <p class="mt-1 text-[13px] text-[var(--color-ink-2)]">Kies alles wat speelt, meerdere mag.</p>
+      <div class="mt-4 space-y-2">
+        ${NEEDS.map((n) => {
+          const active = answers.needs.includes(n.id);
+          return `<button type="button" data-need="${n.id}"
+            class="dwq-pick w-full text-left rounded-[12px] border p-3.5 flex items-center gap-3 transition active:scale-[0.99] ${active
+              ? 'border-[var(--color-ink)] bg-[var(--color-accent-soft)]/40 ring-1 ring-[var(--color-ink)]'
+              : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-border-strong)]'}"
+            style="transition-timing-function:var(--ease-out-quint);">
+            <span class="dwq-need-check shrink-0 grid place-items-center w-5 h-5 rounded-md border ${active ? 'bg-[var(--color-ink)] border-[var(--color-ink)] text-[var(--color-accent)]' : 'border-[var(--color-border-strong)] text-transparent'}">${ICON.check}</span>
+            <span class="text-[13.5px] font-medium text-[var(--color-ink)] leading-snug">${n.label}</span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  function renderBusiness(): string {
+    return `<div class="dwq-anim">
+      <h3 class="text-[20px] font-semibold tracking-tight text-[var(--color-ink)]">Vertel kort iets over je bedrijf</h3>
+      <p class="mt-1 text-[13px] text-[var(--color-ink-2)]">Zo kan een coach zich straks beter voorbereiden.</p>
+      <p class="mt-5 text-[12px] font-semibold text-[var(--color-ink-2)] uppercase tracking-wide">Hoe ziet je team eruit?</p>
+      <div class="mt-2 space-y-2">${TEAM_SIZES.map((o) => pickRow('team', o.value, o.label, o.sub, answers.team === o.value)).join('')}</div>
+      <p class="mt-5 text-[12px] font-semibold text-[var(--color-ink-2)] uppercase tracking-wide">Waar sta je qua omzet?</p>
+      <div class="mt-2 space-y-2">${TRACTION.map((o) => pickRow('traction', o.value, o.label, undefined, answers.traction === o.value)).join('')}</div>
+    </div>`;
+  }
+
+  function renderSelfCheck(): string {
+    return `<div class="dwq-anim">
+      <h3 class="text-[20px] font-semibold tracking-tight text-[var(--color-ink)]">Korte zelfcheck</h3>
+      <p class="mt-1 text-[13px] text-[var(--color-ink-2)]">Vijf basics. Wees gerust eerlijk, hier is geen goed of fout.</p>
+      <div class="mt-4 space-y-2.5">${SELF_CHECKS.map((c) => questionCard('sc_' + c.id, c.statement, answers.selfChecks[c.id])).join('')}</div>
+    </div>`;
+  }
+
+  function renderContact(): string {
+    const field = (id: string, label: string, type: string, val: string, req: boolean, ph: string) =>
+      `<label class="block">
+        <span class="text-[12px] font-medium text-[var(--color-ink-2)]">${label}${req ? ' *' : ' <span class=\'text-[var(--color-ink-3)] font-normal\'>(optioneel)</span>'}</span>
+        <input id="dwq-${id}" type="${type}" value="${val}" placeholder="${ph}" ${req ? 'required' : ''}
+          class="mt-1 w-full h-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" />
+      </label>`;
+    return `<div class="dwq-anim">
+      <div class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[11px] font-semibold text-[var(--color-ink)] mb-3">${ICON.target} Laatste stap</div>
+      <h3 class="text-[19px] font-semibold tracking-tight text-[var(--color-ink)]">Naar wie sturen we het advies?</h3>
+      <p class="mt-1 text-[13px] text-[var(--color-ink-2)]">Je krijgt je uitkomst, en een coach van Dockwize neemt contact op om mee te denken.</p>
+      <div class="mt-4 space-y-3">
+        ${field('name', 'Naam', 'text', contact.name, true, 'Voor- en achternaam')}
+        ${field('company', 'Bedrijf', 'text', contact.company, false, 'Bedrijfsnaam')}
+        ${field('email', 'E-mailadres', 'email', contact.email, true, 'jij@bedrijf.nl')}
+        <label class="block">
+          <span class="text-[12px] font-medium text-[var(--color-ink-2)]">Je grootste uitdaging nu <span class="text-[var(--color-ink-3)] font-normal">(optioneel)</span></span>
+          <textarea id="dwq-challenge" rows="2" placeholder="Waar loop je op dit moment het meest tegenaan?" class="mt-1 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[13.5px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition resize-none">${answers.challenge || ''}</textarea>
+        </label>
+        <label class="flex items-start gap-2.5 pt-1 cursor-pointer">
+          <input id="dwq-consent" type="checkbox" ${contact.consent ? 'checked' : ''} class="mt-0.5 w-4 h-4 accent-[var(--color-ink)] shrink-0" />
+          <span class="text-[12px] leading-snug text-[var(--color-ink-3)]">Dockwize mag mijn antwoorden gebruiken om contact met me op te nemen over een passend vervolg.</span>
+        </label>
+        <p id="dwq-contact-err" class="text-[12px] text-[var(--color-danger)] hidden"></p>
+      </div>
+    </div>`;
+  }
+
+  // ---- Result (mensentaal voor de ondernemer; de diepe analyse is voor de coach in /beheer) ----
+  function renderResult(r: NeedsResult): string {
+    const pkg = r.recommendedPackage;
+    const track = PHASES.map((p) => {
+      const active = p.id === r.focusPhase;
+      return `<div class="flex-1 text-center">
+        <div class="h-1.5 rounded-full ${active ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-surface-2)]'}"></div>
+        <span class="mt-1.5 block text-[10px] leading-tight ${active ? 'font-semibold text-[var(--color-ink)]' : 'text-[var(--color-ink-3)]'}">${PHASE_PLAIN[p.id].label}</span>
+      </div>`;
+    }).join('');
+
+    const needsBlock = r.selectedNeeds.length ? `<section class="dwq-rev rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+      <h4 class="text-[13px] font-semibold tracking-tight text-[var(--color-ink)]">Waar Dockwize je mee helpt</h4>
+      <ul class="mt-2.5 space-y-2">${r.selectedNeeds.map((n) => `<li class="flex items-start gap-2.5"><span class="mt-0.5 shrink-0 grid place-items-center w-5 h-5 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]">${ICON.check}</span><span class="text-[12.5px] text-[var(--color-ink-2)] leading-snug">${n.label}</span></li>`).join('')}</ul>
+    </section>` : '';
+
+    const strengthsBlock = r.strengths.length ? `<section class="dwq-rev rounded-[16px] border border-[var(--color-success)]/25 bg-[var(--color-success-soft)]/40 p-4">
+      <div class="flex items-center gap-2 text-[var(--color-success)]">${ICON.check}<h4 class="text-[13px] font-semibold tracking-tight">Wat je al op orde hebt</h4></div>
+      <ul class="mt-2 space-y-1.5">${r.strengths.map((s) => `<li class="flex items-start gap-2"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-success)] shrink-0"></span><span class="text-[12.5px] text-[var(--color-ink-2)] leading-snug">${s.focus}</span></li>`).join('')}</ul>
+    </section>` : '';
+
+    const gapsBlock = r.gaps.length ? `<section class="dwq-rev rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+      <div class="flex items-center gap-2 text-[var(--color-ink)]">${ICON.target}<h4 class="text-[13px] font-semibold tracking-tight">Waar je nog aan kunt werken</h4></div>
+      <ul class="mt-2 space-y-1.5">${r.gaps.map((g) => `<li class="flex items-start gap-2"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-warning)] shrink-0"></span><span class="text-[12.5px] text-[var(--color-ink-2)] leading-snug">${g.focus}</span></li>`).join('')}</ul>
+    </section>` : '';
+
+    return `<div class="dwq-anim space-y-3.5">
+      <div class="dwq-rev text-center pt-1">
+        <p class="text-[11px] uppercase tracking-[0.14em] text-[var(--color-ink-3)] font-semibold">Jouw uitkomst</p>
+        <h2 class="mt-1.5 text-[24px] leading-[1.12] font-semibold tracking-tight text-[var(--color-ink)] text-balance">${r.headline}</h2>
+        <div class="mt-4 flex items-end gap-1.5">${track}</div>
+      </div>
+      <p class="dwq-rev text-[13.5px] leading-relaxed text-[var(--color-ink-2)] text-pretty">${r.summary}</p>
+      ${strengthsBlock}
+      ${gapsBlock}
+      ${needsBlock}
+      <section class="dwq-rev rounded-[18px] bg-[var(--color-ink)] text-white p-5 overflow-hidden relative">
+        <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-[var(--color-accent)]/15"></div>
+        <p class="text-[11px] uppercase tracking-[0.14em] text-white/55 font-semibold">Aanbevolen programma</p>
+        <h3 class="mt-1.5 text-[20px] font-semibold tracking-tight">Dockwize ${pkg.label}</h3>
+        <p class="mt-1 text-[12.5px] text-white/70">${pkg.tagline}</p>
+        <p class="mt-2 text-[12.5px] text-white/85 leading-snug">${pkg.focus}</p>
+        <a href="${contactUrl}" id="dwq-cta" class="mt-4 inline-flex items-center justify-center gap-2 w-full h-11 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] text-[13.5px] font-semibold transition active:scale-[0.98] hover:brightness-105" style="transition-timing-function:var(--ease-out-quint);">Plan een kennismaking ${ICON.arrow}</a>
+      </section>
+      <p class="dwq-rev text-[11.5px] text-center text-[var(--color-ink-3)] flex items-center justify-center gap-1.5">${ICON.check} We hebben je uitkomst opgeslagen en sturen 'm naar ${contact.email || 'je e-mailadres'}</p>
+    </div>`;
+  }
+
+  // ---- Footer per step ----
+  function renderFooter() {
+    const idx = FLOW.indexOf(stepKey);
+    if (stepKey === 'intro') {
+      footer.innerHTML = primaryBtn('Start de Groeiscan', true);
+      $('#dwq-next')!.addEventListener('click', goNext);
+      return;
+    }
+    if (stepKey === 'result') {
+      footer.innerHTML = `<div class="flex items-center gap-2">
+        <button id="dwq-restart" class="h-11 px-4 rounded-full text-[13px] font-medium text-[var(--color-ink-2)] hover:bg-[var(--color-surface-2)] transition active:scale-95">Opnieuw</button>
+        <button id="dwq-done" class="flex-1 h-11 rounded-full bg-[var(--color-ink)] text-white text-[13.5px] font-semibold transition active:scale-[0.98]">Sluiten</button>
+      </div>`;
+      $('#dwq-restart')!.addEventListener('click', restart);
+      $('#dwq-done')!.addEventListener('click', close);
+      return;
+    }
+    const last = stepKey === 'contact';
+    footer.innerHTML = `<div class="flex items-center gap-2">
+      <button id="dwq-back" class="grid place-items-center h-11 w-11 rounded-full text-[var(--color-ink-2)] hover:bg-[var(--color-surface-2)] transition active:scale-95">${ICON.back}</button>
+      <button id="dwq-next" class="flex-1 inline-flex items-center justify-center gap-1.5 h-11 rounded-full bg-[var(--color-ink)] text-white text-[13.5px] font-semibold transition active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed" style="transition-timing-function:var(--ease-out-quint);">${last ? 'Bekijk mijn analyse' : 'Volgende'} ${ICON.arrow}</button>
+    </div>`;
+    $('#dwq-back')!.addEventListener('click', goBack);
+    $('#dwq-next')!.addEventListener('click', goNext);
+    updateNextEnabled();
+  }
+  function primaryBtn(label: string, full: boolean) {
+    return `<button id="dwq-next" class="${full ? 'w-full ' : ''}inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-[var(--color-ink)] text-white text-[14px] font-semibold transition active:scale-[0.98] hover:-translate-y-px" style="transition-timing-function:var(--ease-out-quint);">${label} ${ICON.arrow}</button>`;
+  }
+
+  // ---- Validation / completeness ----
+  function stepComplete(key: StepKey): boolean {
+    switch (key) {
+      case 'situation': return answers.situation !== null;
+      case 'business': return answers.team !== '' && answers.traction !== '';
+      case 'needs': return answers.needs.length > 0;
+      case 'selfcheck': return SELF_CHECKS.every((c) => answers.selfChecks[c.id] !== undefined);
+      case 'contact': return contact.name.trim().length > 1 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact.email) && contact.consent;
+      default: return true;
+    }
+  }
+  function updateNextEnabled() {
+    const next = $('#dwq-next') as HTMLButtonElement | null;
+    if (next && stepKey !== 'intro') next.disabled = !stepComplete(stepKey);
+  }
+
+  // ---- Navigation ----
+  function goNext() {
+    if (stepKey === 'intro') return setStep('situation');
+    if (!stepComplete(stepKey)) { if (stepKey === 'contact') showContactErr(); return; }
+    if (stepKey === 'contact') return submitAndShow();
+    const idx = FLOW.indexOf(stepKey);
+    setStep(FLOW[idx + 1]);
+  }
+  function goBack() {
+    const idx = FLOW.indexOf(stepKey);
+    if (idx > 0) setStep(FLOW[idx - 1]);
+  }
+  function restart() {
+    answers.situation = null; answers.team = ''; answers.traction = ''; answers.needs = []; answers.selfChecks = {}; answers.challenge = '';
+    contact.name = ''; contact.email = ''; contact.company = ''; contact.phone = ''; contact.consent = false;
+    result = null;
+    setStep('intro');
+  }
+
+  function setStep(key: StepKey) {
+    stepKey = key;
+    render();
+  }
+
+  function showContactErr() {
+    const err = $('#dwq-contact-err');
+    if (!err) return;
+    let msg = '';
+    if (contact.name.trim().length <= 1) msg = 'Vul je naam in.';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact.email)) msg = 'Vul een geldig e-mailadres in.';
+    else if (!contact.consent) msg = 'Geef even toestemming om verder te gaan.';
+    err.textContent = msg;
+    err.classList.toggle('hidden', !msg);
+  }
+
+  async function submitAndShow() {
+    result = analyzeNeeds(answers);
+    try {
+      const sub = buildSubmission(contact, answers, result);
+      await submitSubmission(sub);
+    } catch (e) { /* opslag mag de analyse niet blokkeren */ }
+    setStep('result');
+  }
+
+  // ---- Master render ----
+  function bodyFor(key: StepKey): string {
+    switch (key) {
+      case 'intro': return renderIntro();
+      case 'situation': return renderSituation();
+      case 'business': return renderBusiness();
+      case 'needs': return renderNeeds();
+      case 'selfcheck': return renderSelfCheck();
+      case 'contact': return renderContact();
+      case 'result': return result ? renderResult(result) : '';
+    }
+  }
+
+  function render() {
+    body.innerHTML = bodyFor(stepKey);
+    body.scrollTop = 0;
+    // stepper
+    const formIdx = (FORM_STEPS as readonly string[]).indexOf(stepKey);
+    if (formIdx >= 0) {
+      stepper.classList.remove('hidden');
+      const pct = Math.round(((formIdx + 1) / FORM_STEPS.length) * 100);
+      bar.style.width = pct + '%';
+      $('#dwq-stepper-label')!.textContent = `Stap ${formIdx + 1} van ${FORM_STEPS.length}`;
+      $('#dwq-stepper-pct')!.textContent = pct + '%';
+    } else if (stepKey === 'result') {
+      stepper.classList.remove('hidden');
+      bar.style.width = '100%';
+      $('#dwq-stepper-label')!.textContent = 'Analyse klaar';
+      $('#dwq-stepper-pct')!.textContent = '100%';
+    } else {
+      stepper.classList.add('hidden');
+    }
+    renderFooter();
+    bindBody();
+    revealResult();
+  }
+
+  // ---- Body event binding ----
+  function bindBody() {
+    // situatie (single select)
+    body.querySelectorAll('[data-situation]').forEach((el) => {
+      el.addEventListener('click', () => {
+        answers.situation = Number((el as HTMLElement).dataset.situation) as NeedsAnswers['situation'];
+        render();
+      });
+    });
+    // bedrijfsbasics (team / tractie, single select)
+    body.querySelectorAll('[data-pick]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const g = (el as HTMLElement).dataset.pick!;
+        const v = (el as HTMLElement).dataset.val!;
+        if (g === 'team') answers.team = v;
+        else if (g === 'traction') answers.traction = v;
+        render();
+      });
+    });
+    // zelfcheck (Ja/Deels/Nog niet, in-place)
+    body.querySelectorAll('[data-opt]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const group = (el as HTMLElement).dataset.group!;
+        const val = Number((el as HTMLElement).dataset.opt) as Score;
+        if (group.startsWith('sc_')) answers.selfChecks[group.slice(3)] = val;
+        body.querySelectorAll(`[data-group="${group}"]`).forEach((b) => {
+          const active = Number((b as HTMLElement).dataset.opt) === val;
+          b.className = `dwq-opt h-9 rounded-lg text-[12.5px] font-medium border transition active:scale-[0.97] ${active
+            ? 'bg-[var(--color-ink)] text-white border-[var(--color-ink)]'
+            : 'bg-[var(--color-surface)] text-[var(--color-ink-2)] border-[var(--color-border)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-2)]'}`;
+          (b as HTMLElement).style.transitionTimingFunction = 'var(--ease-out-quint)';
+        });
+        updateNextEnabled();
+      });
+    });
+    // behoeften (multi select, in-place togglen zodat de scrollpositie blijft)
+    body.querySelectorAll('[data-need]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const id = (el as HTMLElement).dataset.need!;
+        const i = answers.needs.indexOf(id);
+        if (i >= 0) answers.needs.splice(i, 1); else answers.needs.push(id);
+        const active = answers.needs.includes(id);
+        const btn = el as HTMLElement;
+        btn.className = `dwq-pick w-full text-left rounded-[12px] border p-3.5 flex items-center gap-3 transition active:scale-[0.99] ${active
+          ? 'border-[var(--color-ink)] bg-[var(--color-accent-soft)]/40 ring-1 ring-[var(--color-ink)]'
+          : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-border-strong)]'}`;
+        btn.style.transitionTimingFunction = 'var(--ease-out-quint)';
+        const check = btn.querySelector('.dwq-need-check') as HTMLElement | null;
+        if (check) check.className = `dwq-need-check shrink-0 grid place-items-center w-5 h-5 rounded-md border ${active ? 'bg-[var(--color-ink)] border-[var(--color-ink)] text-[var(--color-accent)]' : 'border-[var(--color-border-strong)] text-transparent'}`;
+        updateNextEnabled();
+      });
+    });
+    // contact inputs + uitdaging
+    const bind = (id: string, key: keyof Contact) => {
+      const inp = $('#dwq-' + id) as HTMLInputElement | null;
+      if (!inp) return;
+      inp.addEventListener('input', () => {
+        if (key === 'consent') contact.consent = inp.checked;
+        else (contact[key] as string) = inp.value;
+        updateNextEnabled();
+        const err = $('#dwq-contact-err'); if (err) err.classList.add('hidden');
+      });
+    };
+    bind('name', 'name'); bind('company', 'company'); bind('email', 'email'); bind('consent', 'consent');
+    const ch = $('#dwq-challenge') as HTMLTextAreaElement | null;
+    if (ch) ch.addEventListener('input', () => { answers.challenge = ch.value; });
+  }
+
+  // staggered reveal on result
+  function revealResult() {
+    const items = body.querySelectorAll('.dwq-rev');
+    items.forEach((el, i) => {
+      const node = el as HTMLElement;
+      node.style.opacity = '0';
+      node.style.transform = 'translateY(12px)';
+      node.style.transition = 'opacity .5s var(--ease-out-quint), transform .5s var(--ease-out-quint)';
+      setTimeout(() => { node.style.opacity = '1'; node.style.transform = 'none'; }, 60 + i * 70);
+    });
+  }
+</script>
+
+<style>
+  @keyframes dwqIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .dwq-anim { animation: dwqIn .34s var(--ease-out-quint) both; }
+  /* extra small breakpoint for launcher subline */
+  @media (min-width: 400px) { .xs\:block { display: block; } }
+  @media (prefers-reduced-motion: reduce) {
+    .dwq-anim { animation: none; }
+    #dwq-panel, #dwq-backdrop, #dwq-bar { transition: none !important; }
+  }
+</style>
