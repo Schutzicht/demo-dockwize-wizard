@@ -44,19 +44,14 @@ const BRAND = [
 
 const IMAGES = [
   {
-    name: "flexwerk",
+    name: "fuckupnight",
     prompt:
-      "Wide interior shot of a bright modern coworking and flex-work space inside a converted industrial power station. People working on laptops at high communal tables and lounge seating, large windows, exposed steel and warm wood, plants, a few subtle yellow accents. Lively but focused, editorial, warm daylight.",
+      "An evening business networking event in an industrial brick venue, a speaker on a small stage with warm and subtle purple stage lighting, a seated audience in the foreground silhouetted, lively after-work atmosphere, candid documentary photo, shallow depth of field.",
   },
   {
-    name: "microgreens",
+    name: "eatmeet",
     prompt:
-      "A modern indoor vertical farm with trays of fresh green microgreens under soft grow lights, clean food-innovation lab aesthetic, fresh greenery, shallow depth of field, premium and bright. Innovation in food and water.",
-  },
-  {
-    name: "collab",
-    prompt:
-      "Two entrepreneurs collaborating warmly at a laptop in a bright modern innovation hub, candid genuine moment, large windows with soft bokeh, warm neutral tones, editorial, shallow depth of field.",
+      "People enjoying food and drinks together at long communal wooden tables on an outdoor terrace at golden hour, social warm gathering, string lights overhead, candid editorial photo, shallow depth of field.",
   },
 ];
 

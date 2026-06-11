@@ -4,7 +4,6 @@ import DockwizeWordmark from '../components/DockwizeWordmark.astro';
 import DockwizeMark from '../components/DockwizeMark.astro';
 import GroeiscanWidget from '../components/GroeiscanWidget.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import BigRow from '../components/BigRow.astro';
 import DisplayWord from '../components/DisplayWord.astro';
 import { EVENTS } from '../data/events';
 
@@ -107,32 +106,62 @@ const iconArrowR = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" 
     </div>
   </section>
 
-  <!-- ============ Intro (donker, sluit aan op de hero) ============ -->
+  <!-- ============ Intro + content-grid (donker, à la dockwize.nl) ============ -->
   <section class="bg-[var(--color-ink)] text-white">
-    <div class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center" data-reveal>
-      <div>
-        <p class="text-[15px] sm:text-[17px] leading-relaxed text-white/75 text-pretty max-w-lg">Als ondernemer wil je je volgende stap maken. Dockwize helpt je daarbij met programma&apos;s, faciliteiten en een bruisende community in het hart van Zeeland. Van startup tot scale-up, wij brengen je verder.</p>
-        <button type="button" data-dwq-open class="mt-7 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
-          <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-          Doe de Groeiscan
-        </button>
+    <div class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+      <!-- Intro + checklist -->
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start" data-reveal>
+        <div>
+          <p class="text-[16px] sm:text-[19px] leading-relaxed text-[var(--color-accent)] text-pretty max-w-lg">Als ondernemer wil jij de volgende stap maken. Dockwize helpt je daarbij! Met een programma op maat, innovatieve challenges en spraakmakende events. Vestig je bedrijf in onze inspirerende energiecentrale, waar het bruist van de energie.</p>
+          <a href="/starten" class="mt-7 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+            <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            Alles over Dockwize
+          </a>
+        </div>
+        <ul class="space-y-3.5">
+          {['Leren van ondernemers die exact één of twee stappen verder zijn.', 'Structureel werken aan strategie, groei en schaalbaarheid.', 'Je krijgt eerlijke feedback, geen applaus.', 'Je bouwt aan een netwerk dat ook buiten Dockwize voor je werkt.', 'Toegang tot kennis, events en financiering.'].map((t) => (
+            <li class="flex items-start gap-3 border-b border-white/10 pb-3.5">
+              <span class="mt-0.5 grid place-items-center w-5 h-5 rounded-full bg-[#1b7d56] text-white shrink-0"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="text-[13.5px] sm:text-[14px] text-white/80 leading-snug">{t}</span>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul class="space-y-3">
-        {['Persoonlijke begeleiding door een vaste coach', 'Toegang tot financiering en investeerders', 'Werkplekken, vergaderruimtes en flexplekken', 'Een netwerk van 150+ ondernemers en partners'].map((t) => (
-          <li class="flex items-center gap-3 border-b border-white/10 pb-3">
-            <span class="grid place-items-center w-6 h-6 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] shrink-0"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="text-[14px] text-white/80">{t}</span>
-          </li>
-        ))}
-      </ul>
+
+      <!-- Gestapelde fotokaarten -->
+      <div class="mt-12 sm:mt-16 grid sm:grid-cols-2 gap-4 sm:gap-6">
+        <div class="space-y-4 sm:space-y-6">
+          <a href="/community" class="relative block rounded-[18px] overflow-hidden group" data-reveal>
+            <img src="/images/collab.jpg" alt="Community" class="w-full object-cover aspect-[5/4] transition duration-700 group-hover:scale-[1.04]" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+            <span class="absolute left-5 bottom-4 right-5 text-white font-extrabold text-[16px] sm:text-[17px] leading-tight">Eén community, online en offline</span>
+          </a>
+          <a href="/events" class="relative block rounded-[18px] overflow-hidden group" data-reveal>
+            <img src="/images/hero.jpg" alt="Event terugblik" class="w-full object-cover aspect-[4/3] transition duration-700 group-hover:scale-[1.04]" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+            <span class="absolute left-5 bottom-4 right-5 text-white font-extrabold text-[16px] sm:text-[17px] leading-tight">Event terugblik</span>
+          </a>
+          <a href="/events" class="relative block rounded-[18px] overflow-hidden group" data-reveal>
+            <img src="/images/fuckupnight.jpg" alt="Aftermovie" class="w-full object-cover aspect-[16/10] transition duration-700 group-hover:scale-[1.04]" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+            <span class="absolute left-5 bottom-4 right-5 text-white font-extrabold text-[16px] sm:text-[17px] leading-tight">Aftermovie: Fuck up night, digitalisering</span>
+          </a>
+        </div>
+        <div class="space-y-4 sm:space-y-6 sm:mt-20">
+          <a href="/community" class="relative block rounded-[18px] overflow-hidden group" data-reveal>
+            <img src="/images/microgreens.jpg" alt="Innovator in energy, food & water" class="w-full object-cover aspect-[4/5] transition duration-700 group-hover:scale-[1.04]" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+            <span class="absolute left-5 bottom-4 right-5 text-white font-extrabold text-[16px] sm:text-[17px] leading-tight">Innovator in energy, food &amp; water</span>
+          </a>
+          <a href="/faciliteiten" class="relative block rounded-[18px] overflow-hidden group" data-reveal>
+            <img src="/images/eatmeet.jpg" alt="Eat & meet" class="w-full object-cover aspect-[5/4] transition duration-700 group-hover:scale-[1.04]" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+            <span class="absolute left-5 bottom-4 right-5 text-white font-extrabold text-[16px] sm:text-[17px] leading-tight">Eat &amp; meet</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
-
-  <!-- ============ Content-blokken ============ -->
-  <BigRow variant="yellow" imageSide="right" image="/images/collab.jpg" eyebrow="Community" title="Eén community, online en offline" text="Bij Dockwize ben je nooit alleen aan het ondernemen. Ontmoet andere ondernemers, deel kennis en bouw aan waardevolle samenwerkingen, op de werkvloer én online." cta="Bekijk de community" ctaHref="/community" />
-  <BigRow variant="dark" imageSide="left" image="/images/microgreens.jpg" eyebrow="Innovatie" title="Innovatie in energy, food & water" text="Zeeland is dé proeftuin voor duurzame innovatie. Bij Dockwize werken ondernemers aan de oplossingen voor morgen, van schone energie tot slimme voedselproductie." cta="Lees meer" ctaHref="/community" />
-  <BigRow variant="yellow" imageSide="right" image="/images/hero.jpg" eyebrow="Events" title="Mis geen enkel Dockwize-event" text="Van inspiratiesessies tot kennisfestivals: onze events brengen ondernemend Zeeland samen. Doe kennis op, vergroot je netwerk en laat je inspireren." cta="Bekijk de events" ctaHref="/events" />
-  <BigRow variant="dark" imageSide="left" image="/images/flexwerk.jpg" eyebrow="Faciliteiten" title="Een werkplek die met je meegroeit" text="Pak een gratis flexplek, huur een vergaderruimte of betrek je eigen kantoor. In onze omgebouwde energiecentrale werk je middenin de bruisende hub van Zeeland." cta="Onze faciliteiten" ctaHref="/faciliteiten" />
 
   <!-- ============ Events ============ -->
   <DisplayWord word="events" class="pt-12 -mb-2 sm:-mb-6" />
@@ -147,6 +176,11 @@ const iconArrowR = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" 
           <div class="p-5">
             <span class="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-3)]">{e.type}</span>
             <h3 class="mt-1.5 text-[15px] font-bold leading-snug text-[var(--color-ink)]">{e.title}</h3>
+            <div class="mt-3 space-y-1 text-[12px] text-[var(--color-ink-3)]">
+              <p class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> {e.location}</p>
+              <p class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> {e.time}</p>
+            </div>
+            <span class="mt-4 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold group-hover:brightness-110 transition"><span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Event bekijken</span>
           </div>
         </a>
       ))}
@@ -154,15 +188,17 @@ const iconArrowR = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" 
     <div class="mt-7 text-center"><a href="/events" class="inline-flex items-center gap-2 text-[14px] font-semibold text-[var(--color-ink)] hover:gap-3 transition-all">Alle evenementen <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
 
-  <!-- ============ Testimonial ============ -->
-  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-20 sm:pb-28">
-    <div class="grid lg:grid-cols-2 rounded-[28px] overflow-hidden bg-[var(--color-ink)] text-white" data-reveal>
-      <div class="p-8 sm:p-12 flex flex-col justify-center">
-        <span class="inline-flex items-center gap-2 text-[13px] font-bold text-[var(--color-accent)]"><span class="grid place-items-center w-8 h-8 rounded-lg bg-[var(--color-accent)] text-[var(--color-ink)] text-[13px] font-extrabold">Az</span> Adrz</span>
-        <p class="mt-5 text-[clamp(1.3rem,2.4vw,1.9rem)] font-semibold leading-snug text-pretty">“Het &lsquo;Jouw programma&rsquo; is een fantastische mogelijkheid om jezelf en je bedrijf te ontwikkelen.”</p>
-        <p class="mt-5 text-[13px] text-white/55">Deelnemer Dockwize-programma</p>
+  <!-- ============ Testimonial (DuveFit) ============ -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-24">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center" data-reveal>
+      <div>
+        <div class="inline-flex items-baseline text-[22px] font-extrabold tracking-tight leading-none"><span class="text-[var(--color-ink)]">DUVE</span><span class="text-[#1b7d56]">FIT</span></div>
+        <p class="mt-5 text-[14px] font-bold text-[var(--color-ink)]">Wouter en Paula Duvekot</p>
+        <p class="text-[12px] text-[var(--color-ink-3)]">Ondernemers</p>
+        <p class="mt-5 text-[14px] leading-relaxed text-[var(--color-ink-2)] max-w-md">Niet sporten door mentale of fysieke beperkingen is wat Wouter en Paula Duvekot betreft verleden tijd. Deze broer en zus runnen samen Duvefit, de sportschool in Goes waar iedereen welkom is. Met zorg op maat in de vorm van sport en spel houden ze doelgroepen die buiten de maatschappij dreigen te vallen betrokken.</p>
+        <p class="mt-8 text-[clamp(1.4rem,2.6vw,2.1rem)] font-extrabold tracking-tight leading-[1.12] text-[var(--color-ink)] text-pretty">“Het &lsquo;Jouw programma&rsquo; is een fantastische mogelijkheid om jezelf en je bedrijf te ontwikkelen.”</p>
       </div>
-      <div class="min-h-[260px]"><img src="/images/collab.jpg" alt="" class="w-full h-full object-cover" /></div>
+      <div class="rounded-[20px] overflow-hidden shadow-[var(--shadow-lg)]"><img src="/images/collab.jpg" alt="Wouter en Paula Duvekot" class="w-full h-[clamp(300px,40vw,460px)] object-cover" /></div>
     </div>
   </section>
 
