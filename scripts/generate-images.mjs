@@ -44,19 +44,19 @@ const BRAND = [
 
 const IMAGES = [
   {
-    name: "fac-meetingroom",
+    name: "flexwerk",
     prompt:
-      "Wide interior shot of a bright modern meeting and event room set up with neat rows of white chairs facing a presentation area. Large industrial windows with daylight, warm wood floor and light concrete walls, a few subtle yellow accent details. Empty, clean and ready for an event. Professional, editorial, no people.",
+      "Wide interior shot of a bright modern coworking and flex-work space inside a converted industrial power station. People working on laptops at high communal tables and lounge seating, large windows, exposed steel and warm wood, plants, a few subtle yellow accents. Lively but focused, editorial, warm daylight.",
   },
   {
-    name: "fac-brasserie",
+    name: "microgreens",
     prompt:
-      "A chef in a modern open brasserie kitchen plating fresh food on a wooden counter, warm ambient light, brushed steel and wood, inviting upscale-casual restaurant atmosphere. Candid, editorial, shallow depth of field.",
+      "A modern indoor vertical farm with trays of fresh green microgreens under soft grow lights, clean food-innovation lab aesthetic, fresh greenery, shallow depth of field, premium and bright. Innovation in food and water.",
   },
   {
-    name: "event-3dprint",
+    name: "collab",
     prompt:
-      "Extreme macro close-up of a desktop 3D printer printing a small object, glowing nozzle and print bed with cool blue light, fine printed layers visible, very shallow depth of field, technical, modern and premium. No people.",
+      "Two entrepreneurs collaborating warmly at a laptop in a bright modern innovation hub, candid genuine moment, large windows with soft bokeh, warm neutral tones, editorial, shallow depth of field.",
   },
 ];
 

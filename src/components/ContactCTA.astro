@@ -1,0 +1,39 @@
+---
+// Terugkerend contactblok onderaan elke pagina: gele "Get in touch"-kaart + contactformulier
+interface Props {
+  title?: string;
+}
+const { title = 'Samen praten over de toekomst van jouw startup? Get in touch!' } = Astro.props;
+const avatars = ['/images/hero.jpg', '/images/collab.jpg', '/images/fac-brasserie.jpg'];
+const inputCls = 'mt-1 w-full h-11 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition';
+---
+<section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+  <div class="grid lg:grid-cols-[0.85fr_1.4fr] gap-8 lg:gap-12 items-start">
+    <div class="rounded-[22px] bg-[var(--color-accent)] p-7">
+      <div class="flex -space-x-3">
+        {avatars.map((a) => <img src={a} alt="" class="w-12 h-12 rounded-full object-cover ring-[3px] ring-[var(--color-accent)]" />)}
+      </div>
+      <h2 class="mt-5 text-[21px] font-extrabold tracking-tight text-[var(--color-ink)] leading-snug">{title}</h2>
+      <div class="mt-5 space-y-2.5">
+        <a href="#" class="flex items-center gap-3 text-[13.5px] font-semibold text-[var(--color-ink)]"><span class="grid place-items-center w-9 h-9 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> Start een chat</a>
+        <a href="tel:+31644114121" class="flex items-center gap-3 text-[13.5px] font-semibold text-[var(--color-ink)]"><span class="grid place-items-center w-9 h-9 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span> +31 (0)6 44 11 41 21</a>
+        <a href="mailto:info@dockwize.nl" class="flex items-center gap-3 text-[13.5px] font-semibold text-[var(--color-ink)]"><span class="grid place-items-center w-9 h-9 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></span> info@dockwize.nl</a>
+      </div>
+    </div>
+
+    <div class="rounded-[22px] bg-[var(--color-surface)] border border-[var(--color-border)] shadow-[var(--shadow-sm)] p-7">
+      <h2 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Contact</h2>
+      <form class="mt-5 grid sm:grid-cols-2 gap-4" onsubmit="return false">
+        <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Naam</span><input type="text" placeholder="In dit veld wordt getypt…" class={inputCls} /></label>
+        <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Bedrijfsnaam</span><input type="text" placeholder="Hoe heet je bedrijf?" class={inputCls} /></label>
+        <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">E-mailadres</span><input type="email" placeholder="Wat is je e-mailadres?" class={inputCls} /></label>
+        <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Telefoonnummer <span class="text-[var(--color-ink-3)] font-normal">(optioneel)</span></span><input type="tel" placeholder="Hoe kunnen we je bereiken?" class={inputCls} /></label>
+        <label class="block sm:col-span-2"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Bericht <span class="text-[var(--color-ink-3)] font-normal">(optioneel)</span></span><textarea rows="3" placeholder="Wil je alvast iets over jezelf en je bedrijf vertellen?" class="mt-1 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition resize-none"></textarea></label>
+        <label class="sm:col-span-2 flex items-start gap-2.5 cursor-pointer"><input type="checkbox" class="mt-0.5 w-4 h-4 accent-[var(--color-ink)]" /><span class="text-[12px] leading-snug text-[var(--color-ink-3)]">Ik ga akkoord met de verwerking van mijn persoonsgegevens zoals beschreven in de privacyverklaring.</span></label>
+        <div class="sm:col-span-2">
+          <button class="inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2.5 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Verzenden</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

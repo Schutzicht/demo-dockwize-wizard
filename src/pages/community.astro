@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import GroeiscanWidget from '../components/GroeiscanWidget.astro';
+import DisplayWord from '../components/DisplayWord.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+
+const stats = [
+  ['150+', 'Ondernemers'],
+  ['24', 'Partners'],
+  ['90+', 'Events per jaar'],
+  ['12', 'Programma’s'],
+  ['1', 'Bruisende hub'],
+];
+const ondernemers = [
+  ['Tij Technologies', 'Watertech'], ['Zeevonk', 'Duurzame energie'], ['Polderlab', 'Food & agri'],
+  ['Kaap Studio', 'Design & maak'], ['Stroomop', 'Software'], ['Wadloper', 'Logistiek'],
+];
+const partners = [
+  ['Kennispartner Noord', 'Onderwijs'], ['Deltafonds', 'Financiering'], ['Bouwgroep West', 'Bouw & techniek'],
+  ['Impuls Zeeland', 'Ontwikkeling'], ['Provincie', 'Overheid'], ['Rabobank', 'Bank'],
+];
+const initials = (n: string) => n.split(' ').map((w) => w[0]).join('').slice(0, 2);
+---
+
+<Base title="Community — Dockwize">
+  <SiteHeader variant="dark" active="Community" />
+
+  <!-- Hero -->
+  <section class="relative bg-[var(--color-ink)] text-white overflow-hidden">
+    <div class="absolute -top-28 right-0 w-[420px] h-[420px] rounded-full bg-[var(--color-accent)]/12 blur-3xl pointer-events-none"></div>
+    <div class="relative mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-12">
+      <span class="inline-flex items-center gap-1.5 text-[12px] text-white/55"><span class="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span> Community</span>
+      <h1 class="mt-4 font-extrabold tracking-[-0.03em] leading-[1.04] text-[clamp(2.2rem,5vw,3.8rem)] text-[var(--color-accent)] max-w-3xl text-balance">Een community die ondernemend Zeeland verbindt</h1>
+      <div class="mt-9 grid grid-cols-3 sm:grid-cols-5 gap-6 max-w-3xl">
+        {stats.map(([n, l]) => (
+          <div>
+            <p class="text-[clamp(1.5rem,3vw,2.2rem)] font-extrabold text-white leading-none">{n}</p>
+            <p class="mt-1 text-[12px] text-white/55">{l}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Beeld -->
+  <div class="border-t-4 border-[var(--color-info)]">
+    <img src="/images/flexwerk.jpg" alt="Dockwize community" class="w-full h-[clamp(220px,32vw,460px)] object-cover" />
+  </div>
+
+  <!-- Intro -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+    <div class="grid lg:grid-cols-[1.3fr_0.9fr] gap-10 lg:gap-16 items-center">
+      <div>
+        <p class="text-[17px] sm:text-[19px] leading-relaxed text-[var(--color-ink-2)] text-pretty">Ondernemen doe je niet alleen. In de Dockwize-community kom je dagelijks andere ondernemers, experts en partners tegen die je verder helpen. Van een toevallig gesprek bij de koffie tot een waardevolle samenwerking: hier ontstaan de verbindingen die je bedrijf vooruit brengen.</p>
+        <div class="mt-7">
+          <h3 class="text-[16px] font-bold text-[var(--color-ink)]">Samen komen we verder. Online en offline.</h3>
+          <p class="mt-2 text-[14px] leading-relaxed text-[var(--color-ink-2)]">Via events, programma’s en onze online community blijf je verbonden, waar je ook bent. Ontmoet de mensen die net als jij bouwen aan ondernemend Zeeland.</p>
+        </div>
+      </div>
+      <div class="rounded-[20px] overflow-hidden shadow-[var(--shadow-lg)]"><img src="/images/collab.jpg" alt="" class="w-full h-[clamp(220px,26vw,320px)] object-cover" /></div>
+    </div>
+  </section>
+
+  <DisplayWord word="ontmoet" class="-mb-4 sm:-mb-10" />
+
+  <!-- Tabbed members -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-4">
+    <div class="rounded-[24px] bg-[var(--color-ink)] text-white p-6 sm:p-9">
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div class="inline-flex p-1 rounded-full bg-white/10" role="tablist">
+          <button data-tab="ondernemers" class="dw-tab px-5 py-2 rounded-full text-[13.5px] font-semibold transition is-active">Ondernemers</button>
+          <button data-tab="partners" class="dw-tab px-5 py-2 rounded-full text-[13.5px] font-semibold transition text-white/65">Partners</button>
+        </div>
+        <span class="text-[12px] text-white/45">Een greep uit onze community</span>
+      </div>
+
+      <div id="panel-ondernemers" class="dw-panel mt-7 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {ondernemers.map(([n, s]) => (
+          <div class="rounded-[16px] bg-white/[0.06] border border-white/10 p-4 text-center">
+            <span class="mx-auto grid place-items-center w-14 h-14 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] text-[15px] font-bold">{initials(n)}</span>
+            <p class="mt-3 text-[13px] font-bold leading-tight">{n}</p>
+            <p class="mt-0.5 text-[11px] text-white/50">{s}</p>
+          </div>
+        ))}
+      </div>
+      <div id="panel-partners" class="dw-panel mt-7 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 hidden">
+        {partners.map(([n, s]) => (
+          <div class="rounded-[16px] bg-white/[0.06] border border-white/10 p-4 text-center">
+            <span class="mx-auto grid place-items-center w-14 h-14 rounded-full bg-white text-[var(--color-ink)] text-[15px] font-bold">{initials(n)}</span>
+            <p class="mt-3 text-[13px] font-bold leading-tight">{n}</p>
+            <p class="mt-0.5 text-[11px] text-white/50">{s}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA title="Word onderdeel van de community. Get in touch!" />
+  <SiteFooter />
+  <GroeiscanWidget contactUrl="#" />
+</Base>
+
+<style>
+  .dw-tab.is-active { background: var(--color-accent); color: var(--color-ink); }
+  .dw-panel.is-grid { display: grid; }
+</style>
+
+<script is:inline>
+  (function () {
+    const tabs = document.querySelectorAll('.dw-tab');
+    const panels = { ondernemers: document.getElementById('panel-ondernemers'), partners: document.getElementById('panel-partners') };
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => { x.classList.remove('is-active'); x.classList.add('text-white/65'); });
+      t.classList.add('is-active'); t.classList.remove('text-white/65');
+      const key = t.getAttribute('data-tab');
+      Object.entries(panels).forEach(([k, el]) => { if (!el) return; el.classList.toggle('hidden', k !== key); });
+    }));
+  })();
+</script>

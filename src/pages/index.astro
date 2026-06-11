@@ -3,15 +3,17 @@ import Base from '../layouts/Base.astro';
 import DockwizeWordmark from '../components/DockwizeWordmark.astro';
 import DockwizeMark from '../components/DockwizeMark.astro';
 import GroeiscanWidget from '../components/GroeiscanWidget.astro';
-import { PHASES, PACKAGES } from '../lib/model';
+import SiteFooter from '../components/SiteFooter.astro';
+import BigRow from '../components/BigRow.astro';
+import DisplayWord from '../components/DisplayWord.astro';
+import { EVENTS } from '../data/events';
 
-const pkgList = Object.values(PACKAGES).filter((p, i, a) => a.findIndex((x) => x.key === p.key) === i);
 const nav = [
-  { label: 'Starten', href: '#fasen' },
-  { label: 'Groeien', href: '#programmas' },
-  { label: 'Community', href: '#contact' },
-  { label: 'Faciliteiten', href: '#programmas' },
-  { label: 'Events', href: '#contact' },
+  { label: 'Starten', href: '/starten' },
+  { label: 'Groeien', href: '/starten' },
+  { label: 'Community', href: '/community' },
+  { label: 'Faciliteiten', href: '/faciliteiten' },
+  { label: 'Events', href: '/events' },
 ];
 const iconArrowR = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 ---
@@ -105,72 +107,67 @@ const iconArrowR = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" 
     </div>
   </section>
 
-  <!-- ============ Fasen ============ -->
-  <section id="fasen" class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-28">
-    <div class="max-w-2xl" data-reveal>
-      <p class="text-[12px] uppercase tracking-[0.16em] font-bold text-[var(--color-ink-3)]">Het levensfasemodel</p>
-      <h2 class="mt-2 font-extrabold tracking-[-0.02em] leading-[1.02] text-[clamp(1.9rem,4.5vw,3rem)] text-[var(--color-ink)] text-balance">Elk bedrijf doorloopt vier fasen</h2>
-      <p class="mt-4 text-[15px] leading-relaxed text-[var(--color-ink-2)]">Weet jij in welke fase jij zit? En, minstens zo belangrijk: welke stappen je misschien hebt overgeslagen? De Groeiscan brengt het in kaart.</p>
-    </div>
-    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {PHASES.map((p) => (
-        <div class="group rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:-translate-y-1 transition" style="transition-timing-function:var(--ease-out-quint);" data-reveal>
-          <div class="flex items-center justify-between">
-            <span class="grid place-items-center w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] text-[15px] font-extrabold">{p.id}</span>
-            <span class="text-[11px] text-[var(--color-ink-3)] uppercase tracking-wide">{p.tag}</span>
-          </div>
-          <h3 class="mt-4 text-[17px] font-bold tracking-tight text-[var(--color-ink)]">{p.name}</h3>
-          <p class="mt-1.5 text-[13px] leading-snug text-[var(--color-ink-2)]">{p.intro}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- ============ Programma's ============ -->
-  <section id="programmas" class="border-y border-[var(--color-border)] bg-[var(--color-surface)]">
-    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-28">
-      <div class="max-w-2xl" data-reveal>
-        <p class="text-[12px] uppercase tracking-[0.16em] font-bold text-[var(--color-ink-3)]">Programma&apos;s</p>
-        <h2 class="mt-2 font-extrabold tracking-[-0.02em] leading-[1.02] text-[clamp(1.9rem,4.5vw,3rem)] text-[var(--color-ink)] text-balance">Een programma voor elke fase</h2>
-      </div>
-      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {pkgList.map((p) => (
-          <div class="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-bg)] p-6 hover:border-[var(--color-ink)] transition" style="transition-timing-function:var(--ease-out-quint);" data-reveal>
-            <div class="flex items-center gap-2">
-              <h3 class="text-[19px] font-extrabold tracking-tight text-[var(--color-ink)]">{p.label}</h3>
-              <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] font-bold">Fase {p.phase}</span>
-            </div>
-            <p class="mt-2 text-[13.5px] font-semibold text-[var(--color-ink-2)]">{p.tagline}</p>
-            <p class="mt-2 text-[13px] leading-snug text-[var(--color-ink-3)]">{p.focus}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CTA / contact ============ -->
-  <section id="contact" class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-28">
-    <div class="relative overflow-hidden rounded-[28px] bg-[var(--color-ink)] text-white px-7 sm:px-14 py-14 sm:py-20" data-reveal>
-      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-[var(--color-accent)]/15 blur-2xl"></div>
-      <div class="absolute right-10 top-10 hidden sm:block"><DockwizeMark size={64} dotColor="#ffffff" /></div>
-      <div class="relative max-w-xl">
-        <h2 class="font-extrabold tracking-[-0.02em] leading-[1.02] text-[clamp(1.9rem,5vw,3.2rem)] text-balance">Niet zeker waar je staat? Begin met de Groeiscan.</h2>
-        <p class="mt-4 text-[15px] leading-relaxed text-white/70">In 2 minuten weet je in welke fase je zit, welke stappen nog open staan en welk programma je verder helpt. Daarna denken we graag persoonlijk met je mee.</p>
-        <button type="button" data-dwq-open class="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] pl-2 pr-7 py-2 text-[14.5px] font-semibold hover:brightness-105 transition active:scale-[0.98]" style="transition-timing-function:var(--ease-out-quint);">
-          <span class="grid place-items-center w-9 h-9 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]" set:html={iconArrowR}></span>
-          Start de Groeiscan
+  <!-- ============ Intro (donker, sluit aan op de hero) ============ -->
+  <section class="bg-[var(--color-ink)] text-white">
+    <div class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center" data-reveal>
+      <div>
+        <p class="text-[15px] sm:text-[17px] leading-relaxed text-white/75 text-pretty max-w-lg">Als ondernemer wil je je volgende stap maken. Dockwize helpt je daarbij met programma&apos;s, faciliteiten en een bruisende community in het hart van Zeeland. Van startup tot scale-up, wij brengen je verder.</p>
+        <button type="button" data-dwq-open class="mt-7 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+          <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          Doe de Groeiscan
         </button>
       </div>
+      <ul class="space-y-3">
+        {['Persoonlijke begeleiding door een vaste coach', 'Toegang tot financiering en investeerders', 'Werkplekken, vergaderruimtes en flexplekken', 'Een netwerk van 150+ ondernemers en partners'].map((t) => (
+          <li class="flex items-center gap-3 border-b border-white/10 pb-3">
+            <span class="grid place-items-center w-6 h-6 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] shrink-0"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="text-[14px] text-white/80">{t}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Content-blokken ============ -->
+  <BigRow variant="yellow" imageSide="right" image="/images/collab.jpg" eyebrow="Community" title="Eén community, online en offline" text="Bij Dockwize ben je nooit alleen aan het ondernemen. Ontmoet andere ondernemers, deel kennis en bouw aan waardevolle samenwerkingen, op de werkvloer én online." cta="Bekijk de community" ctaHref="/community" />
+  <BigRow variant="dark" imageSide="left" image="/images/microgreens.jpg" eyebrow="Innovatie" title="Innovatie in energy, food & water" text="Zeeland is dé proeftuin voor duurzame innovatie. Bij Dockwize werken ondernemers aan de oplossingen voor morgen, van schone energie tot slimme voedselproductie." cta="Lees meer" ctaHref="/community" />
+  <BigRow variant="yellow" imageSide="right" image="/images/hero.jpg" eyebrow="Events" title="Mis geen enkel Dockwize-event" text="Van inspiratiesessies tot kennisfestivals: onze events brengen ondernemend Zeeland samen. Doe kennis op, vergroot je netwerk en laat je inspireren." cta="Bekijk de events" ctaHref="/events" />
+  <BigRow variant="dark" imageSide="left" image="/images/flexwerk.jpg" eyebrow="Faciliteiten" title="Een werkplek die met je meegroeit" text="Pak een gratis flexplek, huur een vergaderruimte of betrek je eigen kantoor. In onze omgebouwde energiecentrale werk je middenin de bruisende hub van Zeeland." cta="Onze faciliteiten" ctaHref="/faciliteiten" />
+
+  <!-- ============ Events ============ -->
+  <DisplayWord word="events" class="pt-12 -mb-2 sm:-mb-6" />
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-16 sm:pb-20">
+    <div class="grid sm:grid-cols-3 gap-4">
+      {EVENTS.slice(0, 3).map((e) => (
+        <a href={`/events/${e.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition" style="transition-timing-function:var(--ease-out-quint);" data-reveal>
+          <div class="relative">
+            <img src={e.image} alt={e.title} class="h-40 w-full object-cover" />
+            <span class="absolute top-3 left-3 grid place-items-center w-11 h-11 rounded-xl bg-[var(--color-accent)] text-[var(--color-ink)] leading-none shadow"><span class="text-[16px] font-extrabold">{e.day}</span><span class="text-[9px] font-semibold uppercase">{e.month}</span></span>
+          </div>
+          <div class="p-5">
+            <span class="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-3)]">{e.type}</span>
+            <h3 class="mt-1.5 text-[15px] font-bold leading-snug text-[var(--color-ink)]">{e.title}</h3>
+          </div>
+        </a>
+      ))}
+    </div>
+    <div class="mt-7 text-center"><a href="/events" class="inline-flex items-center gap-2 text-[14px] font-semibold text-[var(--color-ink)] hover:gap-3 transition-all">Alle evenementen <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <!-- ============ Testimonial ============ -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-20 sm:pb-28">
+    <div class="grid lg:grid-cols-2 rounded-[28px] overflow-hidden bg-[var(--color-ink)] text-white" data-reveal>
+      <div class="p-8 sm:p-12 flex flex-col justify-center">
+        <span class="inline-flex items-center gap-2 text-[13px] font-bold text-[var(--color-accent)]"><span class="grid place-items-center w-8 h-8 rounded-lg bg-[var(--color-accent)] text-[var(--color-ink)] text-[13px] font-extrabold">Az</span> Adrz</span>
+        <p class="mt-5 text-[clamp(1.3rem,2.4vw,1.9rem)] font-semibold leading-snug text-pretty">“Het &lsquo;Jouw programma&rsquo; is een fantastische mogelijkheid om jezelf en je bedrijf te ontwikkelen.”</p>
+        <p class="mt-5 text-[13px] text-white/55">Deelnemer Dockwize-programma</p>
+      </div>
+      <div class="min-h-[260px]"><img src="/images/collab.jpg" alt="" class="w-full h-full object-cover" /></div>
     </div>
   </section>
 
   <!-- ============ Footer ============ -->
-  <footer class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-      <DockwizeWordmark variant="dark" size={18} />
-      <p class="text-[12px] text-[var(--color-ink-3)]">Kenniswerf Vlissingen &middot; Demo-omgeving voor de Dockwize Groeiscan</p>
-    </div>
-  </footer>
+  <SiteFooter />
 
   <!-- Mobile / Menu overlay -->
   <div id="menu-panel" class="fixed inset-0 z-[80] hidden">

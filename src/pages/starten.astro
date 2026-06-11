@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import GroeiscanWidget from '../components/GroeiscanWidget.astro';
+import LinkSidebar from '../components/LinkSidebar.astro';
+import DisplayWord from '../components/DisplayWord.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+
+const programmas = [
+  { name: 'Jouw programma op maat', text: 'Een persoonlijk traject afgestemd op jouw fase en ambitie. Samen met een vaste coach werk je aan de stappen die er voor jouw bedrijf echt toe doen.', image: '/images/collab.jpg' },
+  { name: 'Groeiprogramma', text: 'Klaar om op te schalen? In het groeiprogramma scherp je je verdienmodel aan, bouw je je team uit en bereid je je voor op financiering en groei.', image: '/images/flexwerk.jpg' },
+  { name: 'CTRL', text: 'Voor techbedrijven en startups met een innovatief product. Van prototype naar markt, met toegang tot kennis, kapitaal en een community van koplopers.', image: '/images/event-3dprint.jpg' },
+];
+const team = [
+  { name: 'Sanne de Vos', role: 'Programmamanager' },
+  { name: 'Joris Brouwer', role: 'Startup coach' },
+  { name: 'Femke Adriaanse', role: 'Innovatiebegeleider' },
+  { name: 'Daan Koster', role: 'Business developer' },
+  { name: 'Lieke Verhoef', role: 'Community manager' },
+];
+const initials = (n: string) => n.split(' ').map((w) => w[0]).join('').slice(0, 2);
+---
+
+<Base title="Starten met ondernemen — Dockwize">
+  <SiteHeader variant="dark" active="Starten" />
+
+  <!-- Hero -->
+  <section class="relative bg-[var(--color-ink)] text-white overflow-hidden">
+    <div class="absolute -top-28 right-0 w-[420px] h-[420px] rounded-full bg-[var(--color-accent)]/12 blur-3xl pointer-events-none"></div>
+    <div class="relative mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-10">
+      <span class="inline-flex items-center gap-1.5 text-[12px] text-white/55"><span class="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span> Starten</span>
+      <h1 class="mt-4 font-extrabold tracking-[-0.03em] leading-[1.04] text-[clamp(2.2rem,5vw,3.8rem)] text-[var(--color-accent)] max-w-3xl text-balance">Geef je bedrijf een vliegende start bij Dockwize!</h1>
+    </div>
+  </section>
+
+  <!-- Beeld -->
+  <div class="border-t-4 border-[var(--color-info)]">
+    <img src="/images/flexwerk.jpg" alt="Starten bij Dockwize" class="w-full h-[clamp(220px,32vw,460px)] object-cover" />
+  </div>
+
+  <!-- Intro + sidebar -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+    <div class="grid lg:grid-cols-[0.8fr_1.4fr] gap-10 lg:gap-16">
+      <LinkSidebar title="Ondersteuning & community" links={[['Persoonlijke coaching', '#'], ['Toegang tot financiering', '#'], ['Werkplek & faciliteiten', '/faciliteiten'], ['Kennis & events', '/events'], ['Community van ondernemers', '/community']]} />
+      <div>
+        <p class="text-[17px] sm:text-[19px] leading-relaxed text-[var(--color-ink-2)] text-pretty">Als ondernemer wil je je volgende stap maken. Bij Dockwize krijg je daarbij een sterk ondernemersnetwerk om je heen, van startup tot scale-up. Onze programma’s, faciliteiten en bruisende community brengen je naar de volgende stap.</p>
+        <p class="mt-4 text-[14.5px] leading-relaxed text-[var(--color-ink-2)]">Of je nu net begint of al een paar jaar onderneemt: we helpen je met een aanpak die past bij jouw fase. Met een vaste coach, toegang tot kennis en kapitaal, en een werkplek in het hart van Zeeland zet je sneller en met meer zekerheid je volgende stap.</p>
+        <div class="mt-8 grid sm:grid-cols-2 gap-4">
+          <img src="/images/microgreens.jpg" alt="" class="w-full h-44 object-cover rounded-[16px]" />
+          <img src="/images/hero.jpg" alt="" class="w-full h-44 object-cover rounded-[16px]" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DisplayWord word="daarom" class="-mb-4 sm:-mb-8" />
+
+  <!-- Programma's -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-6">
+    <div class="rounded-[22px] bg-[var(--color-surface-2)] p-7 sm:p-10 mb-12">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="var(--color-accent)" aria-hidden="true"><path d="M7.17 6.17A6 6 0 0 0 4 11.5V17h5v-5H6.5a3.5 3.5 0 0 1 3.5-3.5V6a.83.83 0 0 0-.83-.83 4 4 0 0 0-2 1zM17.17 6.17A6 6 0 0 0 14 11.5V17h5v-5h-2.5a3.5 3.5 0 0 1 3.5-3.5V6a.83.83 0 0 0-.83-.83 4 4 0 0 0-2 1z"/></svg>
+      <p class="mt-4 text-[18px] sm:text-[22px] font-semibold leading-snug text-[var(--color-ink)] max-w-2xl text-pretty">“Bij Dockwize vond ik niet alleen een werkplek, maar een netwerk dat me echt verder hielp. Mijn coach dacht mee op de momenten die ertoe deden.”</p>
+      <div class="mt-5 flex items-center gap-3">
+        <span class="grid place-items-center w-11 h-11 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)] text-[13px] font-bold">MK</span>
+        <div><p class="text-[13.5px] font-bold text-[var(--color-ink)]">Marit Kuijpers</p><p class="text-[12px] text-[var(--color-ink-3)]">Oprichter, Tij Technologies</p></div>
+      </div>
+    </div>
+
+    <h2 class="text-[clamp(1.6rem,3.5vw,2.4rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Programma’s voor startende bedrijven</h2>
+    <div class="mt-6 space-y-4">
+      {programmas.map((p) => (
+        <div class="grid md:grid-cols-2 rounded-[20px] bg-[var(--color-accent)] overflow-hidden">
+          <div class="flex flex-col justify-center p-7 sm:p-9">
+            <h3 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">{p.name}</h3>
+            <p class="mt-2 text-[14px] leading-relaxed text-[var(--color-ink)]/75 max-w-md">{p.text}</p>
+            <a href="/contact" class="mt-6 self-start inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+              <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+              Meer weten
+            </a>
+          </div>
+          <div class="min-h-[200px] md:order-last order-first"><img src={p.image} alt={p.name} class="w-full h-full object-cover" /></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-14 sm:py-20">
+    <h2 class="text-[clamp(1.5rem,3vw,2.1rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Programmateam startende ondernemers</h2>
+    <div class="mt-7 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      {team.map((m) => (
+        <div class="rounded-[18px] bg-[var(--color-surface)] border border-[var(--color-border)] shadow-[var(--shadow-sm)] overflow-hidden">
+          <div class="aspect-square grid place-items-center bg-gradient-to-br from-[var(--color-accent)] to-[#ffe766]">
+            <span class="text-[34px] font-extrabold text-[var(--color-ink)]/85">{initials(m.name)}</span>
+          </div>
+          <div class="p-4">
+            <p class="text-[14px] font-bold text-[var(--color-ink)] leading-tight">{m.name}</p>
+            <p class="mt-0.5 text-[12px] text-[var(--color-ink-3)]">{m.role}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <ContactCTA />
+  <SiteFooter />
+  <GroeiscanWidget contactUrl="#" />
+</Base>

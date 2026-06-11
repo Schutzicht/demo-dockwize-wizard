@@ -1,0 +1,21 @@
+---
+// Gele "Kijk ook eens bij..."-sidebar met +-links (terugkerend patroon op dockwize.nl)
+interface Props {
+  title: string;
+  links: [string, string][];
+}
+const { title, links } = Astro.props;
+---
+<div class="self-start rounded-[20px] bg-[var(--color-accent)] p-6 sm:p-7">
+  <h2 class="text-[15px] font-extrabold text-[var(--color-ink)]">{title}</h2>
+  <ul class="mt-4 space-y-2.5">
+    {links.map(([label, href]) => (
+      <li>
+        <a href={href} class="flex items-center justify-between gap-3 rounded-xl bg-[var(--color-ink)]/5 hover:bg-[var(--color-ink)]/10 px-4 py-3 text-[13.5px] font-semibold text-[var(--color-ink)] transition">
+          {label}
+          <span class="grid place-items-center w-6 h-6 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)] shrink-0"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

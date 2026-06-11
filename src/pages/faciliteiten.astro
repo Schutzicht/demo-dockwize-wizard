@@ -3,121 +3,182 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GroeiscanWidget from '../components/GroeiscanWidget.astro';
-import { FACILITIES, facilityFaq } from '../data/facilities';
+import LinkSidebar from '../components/LinkSidebar.astro';
+import DisplayWord from '../components/DisplayWord.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { FACILITIES } from '../data/facilities';
 
+const subnav = [
+  ['Huisvesting', 'Eigen kantoorruimte', '#kantoren'],
+  ['Vergaderen', 'Vergaderruimtes huren', '#vergaderen'],
+  ['Flexwerken', 'Gratis flexplek', '#flexwerken'],
+  ['Heerlijk lunchen', 'Brasserie PZEM 41', '#lunchen'],
+];
+const kantoren = [
+  { name: 'Kantoor A3', area: '24 m²', cap: 'Tot 4 personen', price: '€ 395,- p/m' },
+  { name: 'Kantoor A10', area: '40 m²', cap: 'Tot 8 personen', price: '€ 650,- p/m' },
+  { name: 'Kantoor A13', area: '60 m²', cap: 'Tot 12 personen', price: '€ 950,- p/m' },
+  { name: 'Kantoor B2', area: '18 m²', cap: 'Tot 2 personen', price: '€ 295,- p/m' },
+];
 const reasons = [
-  ['Inspirerende locatie', 'Vergaderen in een unieke, industriële omgeving vol karakter en geschiedenis.'],
-  ['Moderne faciliteiten', 'Geavanceerde techniek voor presentaties en vergaderingen.'],
-  ['Flexibele vergaderruimtes', 'Voor kleinschalig vergaderen of grotere zakelijke bijeenkomsten.'],
-  ['Hoogwaardige catering', 'Brasserie PZEM 41 verzorgt catering op maat, van lunchhapjes tot complete buffetten.'],
-  ['Centrale ligging in Zeeland', 'Goed bereikbaar vanuit Middelburg, Goes en andere omliggende plaatsen.'],
-  ['Partnerkorting', 'Partners van Dockwize ontvangen 10% korting op het huren van onze vergaderruimtes.'],
+  'Inspirerende locatie in een omgebouwde energiecentrale',
+  'Flexibel huren: van flexplek tot eigen kantoor',
+  'Hoogwaardige catering via Brasserie PZEM 41',
+  'Gratis parkeren en laadpunten voor elektrische auto’s',
+  'Centraal in Zeeland, goed bereikbaar via A58 en NS',
+  'Direct onderdeel van de Dockwize-community',
 ];
 ---
 
-<Base title="Vergaderruimtes huren in Vlissingen — Dockwize">
-  <SiteHeader variant="light" active="Faciliteiten" />
+<Base title="Faciliteiten — Dockwize">
+  <SiteHeader variant="dark" active="Faciliteiten" />
 
-  <div class="bg-[var(--color-accent)]">
-    <!-- Hero -->
-    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-10">
-      <p class="text-[12px] text-[var(--color-ink)]/55 font-medium">Home &nbsp;›&nbsp; Faciliteiten &nbsp;›&nbsp; Vergaderruimtes</p>
-      <h1 class="mt-4 font-extrabold tracking-[-0.03em] leading-[1.04] text-[clamp(2rem,5vw,3.4rem)] text-[var(--color-ink)] max-w-3xl text-balance">Ontdek inspirerende vergaderruimtes in Vlissingen</h1>
-      <p class="mt-5 max-w-2xl text-[15px] leading-relaxed text-[var(--color-ink)]/75">Ben je op zoek naar een zakelijke vergaderruimte in Vlissingen die meer biedt dan alleen een tafel en een muur? Bij Dockwize vergader je op een unieke locatie, gevestigd in een omgebouwde energiecentrale in het hart van Zeeland. Onze inspirerende vergaderruimtes stimuleren creativiteit en innovatie tijdens iedere zakelijke bijeenkomst.</p>
-    </section>
+  <!-- Hero (donker) -->
+  <section class="relative bg-[var(--color-ink)] text-white overflow-hidden">
+    <div class="absolute -top-28 right-0 w-[460px] h-[460px] rounded-full bg-[var(--color-accent)]/12 blur-3xl pointer-events-none"></div>
+    <div class="relative mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-10">
+      <span class="inline-flex items-center gap-1.5 text-[12px] text-white/55"><span class="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span> Faciliteiten</span>
+      <h1 class="mt-4 font-extrabold tracking-[-0.03em] leading-[1.04] text-[clamp(2.1rem,5vw,3.6rem)] text-[var(--color-accent)] max-w-3xl text-balance">Van vergaderruimtes tot gratis flexwerkplekken</h1>
+      <div class="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-5 max-w-3xl">
+        {subnav.map(([t, s, href]) => (
+          <a href={href} class="group">
+            <p class="text-[15px] font-bold text-white group-hover:text-[var(--color-accent)] transition">{t}</p>
+            <p class="text-[12px] text-white/50">{s}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-    <!-- Kaarten -->
-    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-4">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {FACILITIES.slice(0, 2).map((f) => (
-          <a href={`/faciliteiten/${f.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition" style="transition-timing-function:var(--ease-out-quint);">
-            <div class="relative">
-              <img src={f.image} alt={f.name} class="h-40 w-full object-cover" />
-              <span class="absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[var(--color-ink)]/85 text-white backdrop-blur">{f.capacityShort}</span>
+  <!-- Beeld -->
+  <div class="border-t-4 border-[var(--color-info)]">
+    <img src="/images/flexwerk.jpg" alt="Faciliteiten Dockwize" class="w-full h-[clamp(220px,32vw,460px)] object-cover" />
+  </div>
+
+  <!-- Intro + sidebar -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+    <div class="grid lg:grid-cols-[0.8fr_1.4fr] gap-10 lg:gap-16">
+      <LinkSidebar title="Faciliteiten" links={[['Bedrijfshuisvesting', '#kantoren'], ['Onze vergaderruimtes', '#vergaderen'], ['Flexwerken & coworking', '#flexwerken'], ['Brasserie PZEM 41', '#lunchen'], ['Innovatiepunt KAAP', '#kaap']]} />
+      <div>
+        <p class="text-[17px] sm:text-[19px] leading-relaxed text-[var(--color-ink-2)] text-pretty">Laat je bedrijf groeien binnen Dockwize, waar innovatie en een sterk ondernemersnetwerk samenkomen. Van startup tot gevestigd bedrijf: onze faciliteiten ruimtes en inspirerende community tillen de perfecte basis voor de volgende stap.</p>
+        <p class="mt-4 text-[14.5px] leading-relaxed text-[var(--color-ink-2)]">Of je nu een eigen kantoor zoekt, een vergaderruimte wilt huren, een gratis flexplek pakt of geniet van een lunch bij Brasserie PZEM 41: bij Dockwize zit je goed. En altijd middenin de bruisende community van ondernemend Zeeland.</p>
+      </div>
+    </div>
+  </section>
+
+  <DisplayWord word="werken" class="-mb-3 sm:-mb-10" />
+
+  <!-- Tab-carrousel kantoren/vergaderruimtes -->
+  <section id="kantoren" class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-6 scroll-mt-24">
+    <div class="rounded-[24px] bg-[var(--color-ink)] text-white p-6 sm:p-9">
+      <div class="inline-flex p-1 rounded-full bg-white/10" role="tablist">
+        <button data-tab="kantoor" class="dw-tab px-5 py-2 rounded-full text-[13.5px] font-semibold transition is-active">Kantoorruimtes</button>
+        <button data-tab="vergader" id="tab-vergader" class="dw-tab px-5 py-2 rounded-full text-[13.5px] font-semibold transition text-white/65">Vergaderruimtes</button>
+      </div>
+
+      <div id="panel-kantoor" class="dw-panel mt-7 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {kantoren.map((k) => (
+          <div class="rounded-[16px] bg-white/[0.06] border border-white/10 overflow-hidden">
+            <img src="/images/fac-meetingroom.jpg" alt={k.name} class="h-32 w-full object-cover" />
+            <div class="p-4">
+              <h3 class="text-[15px] font-extrabold">{k.name}</h3>
+              <div class="mt-2 space-y-1 text-[11.5px] text-white/55">
+                <p>{k.area} · {k.cap}</p>
+              </div>
+              <p class="mt-2 text-[13px] font-bold text-[var(--color-accent)]">{k.price}</p>
             </div>
-            <div class="p-5">
-              <h3 class="text-[18px] font-extrabold tracking-tight text-[var(--color-ink)]">{f.name}</h3>
-              <p class="mt-1.5 text-[12.5px] leading-snug text-[var(--color-ink-2)] line-clamp-3">{f.intro}</p>
-              <p class="mt-3 text-[14px] font-bold text-[var(--color-ink)]">{f.price}</p>
+          </div>
+        ))}
+      </div>
+      <div id="panel-vergader" class="dw-panel mt-7 sm:grid-cols-2 lg:grid-cols-4 gap-3 hidden">
+        {FACILITIES.slice(0, 4).map((f) => (
+          <a href={`/faciliteiten/${f.slug}`} class="rounded-[16px] bg-white/[0.06] border border-white/10 overflow-hidden hover:bg-white/[0.1] transition">
+            <img src={f.image} alt={f.name} class="h-32 w-full object-cover" />
+            <div class="p-4">
+              <h3 class="text-[15px] font-extrabold">{f.name}</h3>
+              <p class="mt-2 text-[11.5px] text-white/55">{f.area} · {f.capacityShort}</p>
+              <p class="mt-2 text-[13px] font-bold text-[var(--color-accent)]">{f.price}</p>
             </div>
           </a>
         ))}
-        <!-- Catering -->
-        <div class="rounded-[18px] bg-[var(--color-ink)] text-white p-5 flex flex-col justify-between gap-4 overflow-hidden relative">
-          <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-[var(--color-accent)]/15 blur-2xl"></div>
-          <div class="flex gap-2">
-            <img src="/images/fac-brasserie.jpg" alt="" class="w-1/3 h-16 object-cover rounded-lg" />
-            <img src="/images/fac-brasserie.jpg" alt="" class="w-1/3 h-16 object-cover rounded-lg" />
-            <img src="/images/fac-meetingroom.jpg" alt="" class="w-1/3 h-16 object-cover rounded-lg" />
-          </div>
-          <div>
-            <h3 class="text-[17px] font-extrabold tracking-tight text-[var(--color-accent)]">Vergaderen met hoogwaardige catering</h3>
-            <p class="mt-1 text-[12.5px] text-white/70">Brasserie PZEM 41 verzorgt de lekkerste catering op maat. Vraag naar het volledige aanbod.</p>
-          </div>
-          <a href="/contact" class="self-start inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold hover:brightness-110 transition active:scale-95">
-            <span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-            Mogelijkheden bespreken
-          </a>
+      </div>
+      <div id="vergaderen" class="scroll-mt-24"></div>
+    </div>
+  </section>
+
+  <!-- Innovatiepunt KAAP -->
+  <section id="kaap" class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20 scroll-mt-24">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div>
+        <h2 class="text-[clamp(1.6rem,3.5vw,2.4rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Innovatiepunt KAAP</h2>
+        <p class="mt-4 text-[14.5px] leading-relaxed text-[var(--color-ink-2)]">In Innovatiepunt KAAP komen ondernemers, studenten en experts samen om te innoveren. Van prototyping in het 3D Café tot inspiratiesessies: hier ontstaat de toekomst van ondernemend Zeeland.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="/events" class="inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span> Bekijk de events</a>
+          <a href="/contact" class="inline-flex items-center rounded-full border border-[var(--color-border-strong)] px-5 py-2.5 text-[13.5px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition active:scale-95">Plan een rondleiding</a>
         </div>
-        {FACILITIES.slice(2).map((f) => (
-          <a href={`/faciliteiten/${f.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition" style="transition-timing-function:var(--ease-out-quint);">
-            <div class="relative">
-              <img src={f.image} alt={f.name} class="h-40 w-full object-cover" />
-              <span class="absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[var(--color-ink)]/85 text-white backdrop-blur">{f.capacityShort}</span>
-            </div>
-            <div class="p-5">
-              <h3 class="text-[18px] font-extrabold tracking-tight text-[var(--color-ink)]">{f.name}</h3>
-              <p class="mt-1.5 text-[12.5px] leading-snug text-[var(--color-ink-2)] line-clamp-3">{f.intro}</p>
-              <p class="mt-3 text-[14px] font-bold text-[var(--color-ink)]">{f.price}</p>
-            </div>
-          </a>
-        ))}
       </div>
-    </section>
+      <div class="rounded-[20px] overflow-hidden shadow-[var(--shadow-lg)]"><img src="/images/fac-brasserie.jpg" alt="Innovatiepunt KAAP" class="w-full h-[clamp(240px,30vw,360px)] object-cover" /></div>
+    </div>
+  </section>
 
-    <!-- Voor wie + daarom -->
-    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-14 sm:py-20">
-      <div class="max-w-3xl">
-        <h2 class="text-[clamp(1.4rem,3vw,2rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Voor wie zijn onze vergaderruimtes?</h2>
-        <p class="mt-3 text-[14.5px] leading-relaxed text-[var(--color-ink)]/75">Onze ruimtes zijn geschikt voor projectmanagers, ondernemers, personal assistants, office managers en iedereen die een effectieve, creatieve en professionele vergaderomgeving zoekt. Bij Dockwize bieden we ruimtes die passen bij jouw plannen en wensen, ondersteund door een team dat met je meedenkt en zorgt dat jouw bijeenkomst vlekkeloos verloopt.</p>
-      </div>
-      <div class="mt-10">
-        <h2 class="text-[clamp(1.4rem,3vw,2rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Vergaderen in Vlissingen — daarom kies je voor Dockwize</h2>
-        <ul class="mt-5 space-y-3 max-w-3xl">
-          {reasons.map(([t, d]) => (
-            <li class="flex items-start gap-3">
-              <span class="mt-1 shrink-0 text-[var(--color-ink)]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
-              <p class="text-[14px] text-[var(--color-ink)]/80 leading-snug"><span class="font-bold text-[var(--color-ink)]">{t}:</span> {d}</p>
+  <DisplayWord word="daarom" class="-mb-4 sm:-mb-12" />
+
+  <!-- Daarom Dockwize -->
+  <section id="flexwerken" class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-4 scroll-mt-24">
+    <div class="rounded-[24px] bg-[var(--color-surface)] border border-[var(--color-border)] shadow-[var(--shadow-md)] p-7 sm:p-10">
+      <div class="grid lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-12">
+        <div>
+          <h2 class="text-[clamp(1.5rem,3vw,2.1rem)] font-extrabold tracking-tight text-[var(--color-ink)] leading-tight">…kies je voor Dockwize</h2>
+          <a href="/contact" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span> Eerste kennismaking</a>
+        </div>
+        <ul class="space-y-3">
+          {reasons.map((r) => (
+            <li class="flex items-center gap-3 border-b border-[var(--color-border)] pb-3 last:border-0">
+              <span class="grid place-items-center w-7 h-7 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)] shrink-0"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="text-[14px] text-[var(--color-ink-2)]">{r}</span>
             </li>
           ))}
         </ul>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FAQ -->
-    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-20 sm:pb-24">
-      <div class="grid lg:grid-cols-[0.7fr_1.6fr] gap-10 items-start">
-        <div>
-          <h2 class="text-[clamp(1.7rem,4vw,2.6rem)] font-extrabold tracking-tight leading-[1.05] text-[var(--color-ink)]">Veelgestelde vragen & antwoorden</h2>
-          <div class="mt-6 rounded-[18px] overflow-hidden shadow-[var(--shadow-md)]">
-            <img src="/images/fac-meetingroom.jpg" alt="" class="w-full h-44 object-cover" />
-          </div>
-        </div>
-        <div class="divide-y divide-[var(--color-ink)]/15">
-          {facilityFaq.map((item) => (
-            <details class="group py-1">
-              <summary class="list-none cursor-pointer flex items-center justify-between gap-4 py-4">
-                <span class="text-[15px] font-semibold text-[var(--color-ink)]">{item.q}</span>
-                <span class="shrink-0 grid place-items-center w-7 h-7 rounded-full bg-[#1b7d56] text-white transition group-open:rotate-45"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
-              </summary>
-              <p class="pb-4 pr-10 text-[13.5px] leading-relaxed text-[var(--color-ink)]/75">{item.a}</p>
-            </details>
-          ))}
-        </div>
+  <!-- Beeld-tekst rijen -->
+  <section id="lunchen" class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20 scroll-mt-24 space-y-12">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <img src="/images/microgreens.jpg" alt="" class="w-full h-[clamp(220px,26vw,320px)] object-cover rounded-[18px]" />
+      <div>
+        <h3 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Heerlijk lunchen bij Brasserie PZEM 41</h3>
+        <p class="mt-2 text-[14px] leading-relaxed text-[var(--color-ink-2)]">Verse, lokale gerechten in een ongedwongen sfeer. Perfect voor een werklunch, een meeting of gewoon een goede kop koffie tussendoor.</p>
       </div>
-    </section>
-  </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="md:order-2"><img src="/images/collab.jpg" alt="" class="w-full h-[clamp(220px,26vw,320px)] object-cover rounded-[18px]" /></div>
+      <div class="md:order-1">
+        <h3 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Flexwerken & coworking</h3>
+        <p class="mt-2 text-[14px] leading-relaxed text-[var(--color-ink-2)]">Pak een gratis flexplek in de open werkruimte, of huur een vaste plek in onze coworking-zone. Snel internet, koffie en een netwerk om je heen.</p>
+      </div>
+    </div>
+  </section>
 
+  <ContactCTA title="Vergaderen, flexwerken of huren? Get in touch!" />
   <SiteFooter />
   <GroeiscanWidget contactUrl="#" />
 </Base>
+
+<style>
+  .dw-tab.is-active { background: var(--color-accent); color: var(--color-ink); }
+</style>
+
+<script is:inline>
+  (function () {
+    const tabs = document.querySelectorAll('.dw-tab');
+    const panels = { kantoor: document.getElementById('panel-kantoor'), vergader: document.getElementById('panel-vergader') };
+    const select = (key) => {
+      tabs.forEach((x) => { const on = x.getAttribute('data-tab') === key; x.classList.toggle('is-active', on); x.classList.toggle('text-white/65', !on); });
+      Object.entries(panels).forEach(([k, el]) => { if (el) el.classList.toggle('hidden', k !== key); });
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => select(t.getAttribute('data-tab'))));
+    document.querySelectorAll('a[href="#vergaderen"]').forEach((a) => a.addEventListener('click', () => select('vergader')));
+  })();
+</script>

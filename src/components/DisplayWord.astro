@@ -1,0 +1,13 @@
+---
+// Reuze tussenwoord ("werken", "daarom", "ontmoet", "events") als sectie-scheiding, net als op dockwize.nl
+interface Props {
+  word: string;
+  align?: 'left' | 'center' | 'right';
+  class?: string;
+}
+const { word, align = 'left', class: cls = '' } = Astro.props;
+const j = align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left';
+---
+<div class={`overflow-hidden leading-[0.78] select-none px-6 sm:px-10 lg:px-16 ${j} ${cls}`} aria-hidden="true">
+  <span class="inline-block font-extrabold tracking-[-0.05em] text-[var(--color-accent)] text-[clamp(4.5rem,19vw,17rem)]">{word}</span>
+</div>
