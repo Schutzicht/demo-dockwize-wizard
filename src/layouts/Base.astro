@@ -32,5 +32,23 @@ const { title, description = 'Ontdek in welke groeifase je bedrijf zit met de Do
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
       document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
     </script>
+    <script>
+      // Vercel Web Analytics + eigen "tel mij niet mee"-uitsluiting.
+      // Jorik zet de vlag eenmalig per browser via ?notrack=1 (en ?notrack=0 om weer mee te tellen).
+      import { inject } from '@vercel/analytics';
+      try {
+        const p = new URLSearchParams(location.search);
+        if (p.has('notrack')) {
+          if (p.get('notrack') === '0') localStorage.removeItem('dw-no-track');
+          else localStorage.setItem('dw-no-track', '1');
+        }
+      } catch (e) {}
+      inject({
+        beforeSend: (event) => {
+          try { if (localStorage.getItem('dw-no-track') === '1') return null; } catch (e) {}
+          return event;
+        },
+      });
+    </script>
   </body>
 </html>
