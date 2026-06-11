@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import GroeiscanWidget from '../components/GroeiscanWidget.astro';
+
+const sideLinks = [
+  ['Bedrijfshuisvesting', '/faciliteiten'],
+  ['Onze vergaderruimtes', '/faciliteiten'],
+  ['Flexwerken & coworking', '/faciliteiten'],
+  ['Brasserie PZEM 41', '#'],
+  ['Innovatiepunt KAAP', '#'],
+];
+---
+
+<Base title="Contact — Dockwize">
+  <SiteHeader variant="dark" active="" />
+
+  <!-- Hero (donker) -->
+  <section class="relative bg-[var(--color-ink)] text-white overflow-hidden">
+    <div class="absolute -top-28 right-0 w-[420px] h-[420px] rounded-full bg-[var(--color-accent)]/12 blur-3xl pointer-events-none"></div>
+    <div class="relative mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-10">
+      <div class="inline-flex items-center gap-1.5 text-[12px] text-white/55">
+        <span class="grid place-items-center w-5 h-5 rounded-full border border-white/20"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Contact
+      </div>
+      <h1 class="mt-4 font-extrabold tracking-[-0.03em] leading-none text-[clamp(2.8rem,6vw,4.5rem)] text-[var(--color-accent)]">Contact</h1>
+      <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-6 max-w-2xl">
+        <div>
+          <p class="text-[12.5px] font-bold text-[var(--color-accent)]">Edisonweg 41B</p>
+          <p class="text-[12.5px] text-white/60 mt-0.5">4382 NV Vlissingen</p>
+        </div>
+        <div>
+          <p class="text-[12.5px] font-bold text-[var(--color-accent)]">Telefoon</p>
+          <p class="text-[12.5px] text-white/60 mt-0.5">+31 (0)6 44 11 41 21</p>
+        </div>
+        <div>
+          <p class="text-[12.5px] font-bold text-[var(--color-accent)]">E-mail</p>
+          <p class="text-[12.5px] text-white/60 mt-0.5">info@dockwize.nl</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beeld -->
+  <div class="border-t-4 border-[var(--color-info)]">
+    <img src="/images/hero.jpg" alt="Dockwize innovatiehub" class="w-full h-[clamp(220px,32vw,460px)] object-cover" />
+  </div>
+
+  <!-- Contactblok -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+    <div class="grid lg:grid-cols-[0.8fr_1.4fr] gap-10 lg:gap-16">
+      <!-- Sidebar -->
+      <div class="self-start rounded-[20px] bg-[var(--color-accent)] p-6 sm:p-7">
+        <h2 class="text-[15px] font-extrabold text-[var(--color-ink)]">Kijk ook eens bij...</h2>
+        <ul class="mt-4 space-y-2.5">
+          {sideLinks.map(([label, href]) => (
+            <li>
+              <a href={href} class="flex items-center justify-between gap-3 rounded-xl bg-[var(--color-ink)]/5 hover:bg-[var(--color-ink)]/10 px-4 py-3 text-[13.5px] font-semibold text-[var(--color-ink)] transition">
+                {label}
+                <span class="grid place-items-center w-6 h-6 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)] shrink-0"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Tekst -->
+      <div>
+        <p class="text-[17px] sm:text-[19px] leading-relaxed text-[var(--color-ink-2)] text-pretty">Wil je meer weten over een ondernemersprogramma, events, flexwerken of huisvesting in Dockwize? We vertellen je graag meer. Stuur een e-mail, bel ons of vul het contactformulier in.</p>
+        <div class="mt-8 space-y-6">
+          <div>
+            <h3 class="text-[15px] font-bold text-[var(--color-ink)]">Vergaderruimte reserveren?</h3>
+            <p class="mt-1 text-[14px] text-[var(--color-ink-2)]">Dat kan eenvoudig online. Bekijk eens bij <a href="/faciliteiten" class="text-[#1b7d56] font-semibold underline underline-offset-2">onze vergaderruimtes</a>.</p>
+          </div>
+          <div>
+            <h3 class="text-[15px] font-bold text-[var(--color-ink)]">Flexwerken?</h3>
+            <p class="mt-1 text-[14px] text-[var(--color-ink-2)]">Dat kan helemaal gratis in onze Geng van Zaken. Meer informatie vind je <a href="/faciliteiten" class="text-[#1b7d56] font-semibold underline underline-offset-2">hier</a>.</p>
+          </div>
+          <div>
+            <h3 class="text-[15px] font-bold text-[var(--color-ink)]">Tevreden over je bezoek bij Dockwize?</h3>
+            <p class="mt-1 text-[14px] text-[var(--color-ink-2)]">Laat een <a href="#" class="text-[#1b7d56] font-semibold underline underline-offset-2">review</a> achter via Google.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Innovatiepunt KAAP -->
+  <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-20 sm:pb-28">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div>
+        <h2 class="text-[clamp(1.6rem,3.5vw,2.4rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Innovatiepunt KAAP</h2>
+        <p class="mt-4 text-[14.5px] leading-relaxed text-[var(--color-ink-2)]">Innovatiepunt KAAP is dé plek waar ondernemers, studenten en experts samenkomen om te innoveren. Van prototyping in het 3D Café tot inspiratiesessies en events: hier ontstaat de toekomst van ondernemend Zeeland. Loop binnen, werk mee en laat je verrassen.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="/events" class="inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+            <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            Bekijk de events
+          </a>
+          <a href="/faciliteiten" class="inline-flex items-center rounded-full border border-[var(--color-border-strong)] px-5 py-2.5 text-[13.5px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition active:scale-95">Onze faciliteiten</a>
+        </div>
+      </div>
+      <div class="rounded-[20px] overflow-hidden shadow-[var(--shadow-lg)]">
+        <img src="/images/fac-brasserie.png" alt="Innovatiepunt KAAP" class="w-full h-[clamp(240px,30vw,360px)] object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <SiteFooter />
+  <GroeiscanWidget contactUrl="#" />
+</Base>

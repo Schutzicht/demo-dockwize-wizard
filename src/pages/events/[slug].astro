@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import GroeiscanWidget from '../../components/GroeiscanWidget.astro';
+import { EVENTS } from '../../data/events';
+
+export function getStaticPaths() {
+  return EVENTS.map((e) => ({ params: { slug: e.slug }, props: { e } }));
+}
+const { e } = Astro.props;
+const specs = [
+  ['Datum', e.dateLong],
+  ['Tijdstip', e.time],
+  ['Locatie', e.location],
+  ['Organisator', e.organizer],
+];
+const verwachten = [
+  `Introductie door ${e.organizer} over hoe digitale technologie de maakindustrie verandert.`,
+  'De experts aan het woord over de mogelijkheden en grenzen van het onderwerp.',
+  'Live demonstraties van de techniek die in Innovatiepunt KAAP is opgesteld.',
+  'Afsluitende borrel: stel je vragen aan experts en deel je ervaringen met andere ondernemers.',
+];
+---
+
+<Base title={`${e.title} — Dockwize`}>
+  <SiteHeader variant="light" active="Events" />
+
+  <!-- Hero (geel) -->
+  <section class="bg-[var(--color-accent)]">
+    <div class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-10">
+      <p class="text-[12px] text-[var(--color-ink)]/55 font-medium">Home &nbsp;›&nbsp; Events</p>
+      <h1 class="mt-3 font-extrabold tracking-[-0.03em] leading-tight text-[clamp(1.9rem,4.5vw,3rem)] text-[var(--color-ink)] max-w-3xl text-balance">{e.title}</h1>
+      <div class="mt-7 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          {specs.map(([label, val]) => (
+            <div>
+              <p class="text-[12px] font-bold text-[var(--color-ink)]">{label}</p>
+              <p class="text-[12.5px] text-[var(--color-ink)]/70 mt-0.5">{val}</p>
+            </div>
+          ))}
+        </div>
+        <a href="#aanmelden" class="shrink-0 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+          <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          Direct aanmelden
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="mx-auto max-w-[900px] px-6 sm:px-10 py-14 sm:py-16">
+    <p class="text-[16px] sm:text-[18px] leading-relaxed text-[var(--color-ink-2)] text-pretty">{e.intro}</p>
+
+    <div class="mt-8 rounded-[20px] overflow-hidden shadow-[var(--shadow-lg)]">
+      <img src={e.image} alt={e.title} class="w-full h-[clamp(240px,40vw,440px)] object-cover" />
+    </div>
+
+    <div class="mt-12">
+      <h2 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Wat kun je verwachten?</h2>
+      <ul class="mt-4 space-y-2.5">
+        {verwachten.map((v) => (
+          <li class="flex items-start gap-3">
+            <span class="mt-1 shrink-0 text-[#1b7d56]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+            <span class="text-[14px] text-[var(--color-ink-2)] leading-snug">{v}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Voor wie is dit event?</h2>
+      <p class="mt-2 text-[14px] leading-relaxed text-[var(--color-ink-2)]">Voor ondernemers, maakbedrijven en professionals die nieuwsgierig zijn en willen ontdekken wat dit onderwerp voor hun werk kan betekenen. Of je nu net start of al jaren meedraait, je gaat naar huis met nieuwe inzichten en waardevolle contacten.</p>
+      <a href="#aanmelden" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+        <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        Meld je aan
+      </a>
+    </div>
+  </section>
+
+  <!-- Aanmelden -->
+  <section id="aanmelden" class="bg-[var(--color-surface-2)] scroll-mt-20">
+    <div class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-16 sm:py-20 grid lg:grid-cols-[0.85fr_1.4fr] gap-8 lg:gap-12 items-start">
+      <div class="rounded-[22px] bg-[var(--color-accent)] p-7">
+        <div class="w-16 h-16 rounded-full overflow-hidden ring-4 ring-white/40"><img src="/images/hero.jpg" alt="" class="w-full h-full object-cover" /></div>
+        <h2 class="mt-4 text-[20px] font-extrabold tracking-tight text-[var(--color-ink)] leading-snug">Over de spreker</h2>
+        <p class="mt-2 text-[13.5px] text-[var(--color-ink)]/75 leading-relaxed">Een ervaren expert van {e.organizer} neemt je mee in de praktijk. Met jarenlange ervaring deelt hij concrete voorbeelden, do’s en don’ts en beantwoordt al je vragen.</p>
+        <p class="mt-3"><a href="#" class="text-[13px] font-semibold text-[var(--color-ink)] underline underline-offset-2">www.{e.organizer.toLowerCase().replace(/[^a-z]/g, '')}.nl</a></p>
+      </div>
+
+      <div class="rounded-[22px] bg-[var(--color-surface)] border border-[var(--color-border)] shadow-[var(--shadow-sm)] p-7">
+        <h2 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Direct aanmelden</h2>
+        <form class="mt-5 grid sm:grid-cols-2 gap-4" onsubmit="return false">
+          <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Naam</span><input type="text" placeholder="In dit veld wordt getypt…" class="mt-1 w-full h-11 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" /></label>
+          <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Bedrijfsnaam</span><input type="text" placeholder="Hoe heet je bedrijf?" class="mt-1 w-full h-11 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" /></label>
+          <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">E-mailadres</span><input type="email" placeholder="Wat is je e-mailadres?" class="mt-1 w-full h-11 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" /></label>
+          <label class="block"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Telefoonnummer <span class="text-[var(--color-ink-3)] font-normal">(optioneel)</span></span><input type="tel" placeholder="Hoe kunnen we je bereiken?" class="mt-1 w-full h-11 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition" /></label>
+          <label class="block sm:col-span-2"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Bericht <span class="text-[var(--color-ink-3)] font-normal">(optioneel)</span></span><textarea rows="3" placeholder="Wil je alvast iets over jezelf en je bedrijf vertellen?" class="mt-1 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition resize-none"></textarea></label>
+          <label class="sm:col-span-2 flex items-start gap-2.5 cursor-pointer"><input type="checkbox" class="mt-0.5 w-4 h-4 accent-[var(--color-ink)]" /><span class="text-[12px] leading-snug text-[var(--color-ink-3)]">Ik ga akkoord met de verwerking van mijn persoonsgegevens zoals beschreven in de privacyverklaring.</span></label>
+          <div class="sm:col-span-2">
+            <button class="inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2.5 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Verzenden</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <SiteFooter />
+  <GroeiscanWidget contactUrl="#" />
+</Base>

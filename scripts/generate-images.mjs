@@ -44,12 +44,19 @@ const BRAND = [
 
 const IMAGES = [
   {
-    name: "hero",
+    name: "fac-meetingroom",
     prompt:
-      "Wide cinematic landscape. Two or three young entrepreneurs collaborating hands-on around a laptop and paper sketches at a light wooden table in a bright, modern co-working and innovation hub. " +
-      "A genuine, focused working moment. Soft warm daylight streams from large windows on the right side of the frame, creating gentle bokeh in the background. " +
-      "The people are positioned center to right; the left third of the frame is calmer, darker and more out-of-focus (shadowed interior) so a dark gradient overlay can sit there for headline text. " +
-      "Warm neutral tones of pale wood, concrete and amber light. Cinematic, premium, understated. No green of any kind.",
+      "Wide interior shot of a bright modern meeting and event room set up with neat rows of white chairs facing a presentation area. Large industrial windows with daylight, warm wood floor and light concrete walls, a few subtle yellow accent details. Empty, clean and ready for an event. Professional, editorial, no people.",
+  },
+  {
+    name: "fac-brasserie",
+    prompt:
+      "A chef in a modern open brasserie kitchen plating fresh food on a wooden counter, warm ambient light, brushed steel and wood, inviting upscale-casual restaurant atmosphere. Candid, editorial, shallow depth of field.",
+  },
+  {
+    name: "event-3dprint",
+    prompt:
+      "Extreme macro close-up of a desktop 3D printer printing a small object, glowing nozzle and print bed with cool blue light, fine printed layers visible, very shallow depth of field, technical, modern and premium. No people.",
   },
 ];
 

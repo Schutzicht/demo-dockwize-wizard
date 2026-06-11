@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import GroeiscanWidget from '../components/GroeiscanWidget.astro';
+import { FACILITIES, facilityFaq } from '../data/facilities';
+
+const reasons = [
+  ['Inspirerende locatie', 'Vergaderen in een unieke, industriële omgeving vol karakter en geschiedenis.'],
+  ['Moderne faciliteiten', 'Geavanceerde techniek voor presentaties en vergaderingen.'],
+  ['Flexibele vergaderruimtes', 'Voor kleinschalig vergaderen of grotere zakelijke bijeenkomsten.'],
+  ['Hoogwaardige catering', 'Brasserie PZEM 41 verzorgt catering op maat, van lunchhapjes tot complete buffetten.'],
+  ['Centrale ligging in Zeeland', 'Goed bereikbaar vanuit Middelburg, Goes en andere omliggende plaatsen.'],
+  ['Partnerkorting', 'Partners van Dockwize ontvangen 10% korting op het huren van onze vergaderruimtes.'],
+];
+---
+
+<Base title="Vergaderruimtes huren in Vlissingen — Dockwize">
+  <SiteHeader variant="light" active="Faciliteiten" />
+
+  <div class="bg-[var(--color-accent)]">
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-10">
+      <p class="text-[12px] text-[var(--color-ink)]/55 font-medium">Home &nbsp;›&nbsp; Faciliteiten &nbsp;›&nbsp; Vergaderruimtes</p>
+      <h1 class="mt-4 font-extrabold tracking-[-0.03em] leading-[1.04] text-[clamp(2rem,5vw,3.4rem)] text-[var(--color-ink)] max-w-3xl text-balance">Ontdek inspirerende vergaderruimtes in Vlissingen</h1>
+      <p class="mt-5 max-w-2xl text-[15px] leading-relaxed text-[var(--color-ink)]/75">Ben je op zoek naar een zakelijke vergaderruimte in Vlissingen die meer biedt dan alleen een tafel en een muur? Bij Dockwize vergader je op een unieke locatie, gevestigd in een omgebouwde energiecentrale in het hart van Zeeland. Onze inspirerende vergaderruimtes stimuleren creativiteit en innovatie tijdens iedere zakelijke bijeenkomst.</p>
+    </section>
+
+    <!-- Kaarten -->
+    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-4">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {FACILITIES.slice(0, 2).map((f) => (
+          <a href={`/faciliteiten/${f.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition" style="transition-timing-function:var(--ease-out-quint);">
+            <div class="relative">
+              <img src={f.image} alt={f.name} class="h-40 w-full object-cover" />
+              <span class="absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[var(--color-ink)]/85 text-white backdrop-blur">{f.capacityShort}</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-[18px] font-extrabold tracking-tight text-[var(--color-ink)]">{f.name}</h3>
+              <p class="mt-1.5 text-[12.5px] leading-snug text-[var(--color-ink-2)] line-clamp-3">{f.intro}</p>
+              <p class="mt-3 text-[14px] font-bold text-[var(--color-ink)]">{f.price}</p>
+            </div>
+          </a>
+        ))}
+        <!-- Catering -->
+        <div class="rounded-[18px] bg-[var(--color-ink)] text-white p-5 flex flex-col justify-between gap-4 overflow-hidden relative">
+          <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-[var(--color-accent)]/15 blur-2xl"></div>
+          <div class="flex gap-2">
+            <img src="/images/fac-brasserie.png" alt="" class="w-1/3 h-16 object-cover rounded-lg" />
+            <img src="/images/fac-brasserie.png" alt="" class="w-1/3 h-16 object-cover rounded-lg" />
+            <img src="/images/fac-meetingroom.png" alt="" class="w-1/3 h-16 object-cover rounded-lg" />
+          </div>
+          <div>
+            <h3 class="text-[17px] font-extrabold tracking-tight text-[var(--color-accent)]">Vergaderen met hoogwaardige catering</h3>
+            <p class="mt-1 text-[12.5px] text-white/70">Brasserie PZEM 41 verzorgt de lekkerste catering op maat. Vraag naar het volledige aanbod.</p>
+          </div>
+          <a href="/contact" class="self-start inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold hover:brightness-110 transition active:scale-95">
+            <span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            Mogelijkheden bespreken
+          </a>
+        </div>
+        {FACILITIES.slice(2).map((f) => (
+          <a href={`/faciliteiten/${f.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition" style="transition-timing-function:var(--ease-out-quint);">
+            <div class="relative">
+              <img src={f.image} alt={f.name} class="h-40 w-full object-cover" />
+              <span class="absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[var(--color-ink)]/85 text-white backdrop-blur">{f.capacityShort}</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-[18px] font-extrabold tracking-tight text-[var(--color-ink)]">{f.name}</h3>
+              <p class="mt-1.5 text-[12.5px] leading-snug text-[var(--color-ink-2)] line-clamp-3">{f.intro}</p>
+              <p class="mt-3 text-[14px] font-bold text-[var(--color-ink)]">{f.price}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Voor wie + daarom -->
+    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 py-14 sm:py-20">
+      <div class="max-w-3xl">
+        <h2 class="text-[clamp(1.4rem,3vw,2rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Voor wie zijn onze vergaderruimtes?</h2>
+        <p class="mt-3 text-[14.5px] leading-relaxed text-[var(--color-ink)]/75">Onze ruimtes zijn geschikt voor projectmanagers, ondernemers, personal assistants, office managers en iedereen die een effectieve, creatieve en professionele vergaderomgeving zoekt. Bij Dockwize bieden we ruimtes die passen bij jouw plannen en wensen, ondersteund door een team dat met je meedenkt en zorgt dat jouw bijeenkomst vlekkeloos verloopt.</p>
+      </div>
+      <div class="mt-10">
+        <h2 class="text-[clamp(1.4rem,3vw,2rem)] font-extrabold tracking-tight text-[var(--color-ink)]">Vergaderen in Vlissingen — daarom kies je voor Dockwize</h2>
+        <ul class="mt-5 space-y-3 max-w-3xl">
+          {reasons.map(([t, d]) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-1 shrink-0 text-[var(--color-ink)]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+              <p class="text-[14px] text-[var(--color-ink)]/80 leading-snug"><span class="font-bold text-[var(--color-ink)]">{t}:</span> {d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-20 sm:pb-24">
+      <div class="grid lg:grid-cols-[0.7fr_1.6fr] gap-10 items-start">
+        <div>
+          <h2 class="text-[clamp(1.7rem,4vw,2.6rem)] font-extrabold tracking-tight leading-[1.05] text-[var(--color-ink)]">Veelgestelde vragen & antwoorden</h2>
+          <div class="mt-6 rounded-[18px] overflow-hidden shadow-[var(--shadow-md)]">
+            <img src="/images/fac-meetingroom.png" alt="" class="w-full h-44 object-cover" />
+          </div>
+        </div>
+        <div class="divide-y divide-[var(--color-ink)]/15">
+          {facilityFaq.map((item) => (
+            <details class="group py-1">
+              <summary class="list-none cursor-pointer flex items-center justify-between gap-4 py-4">
+                <span class="text-[15px] font-semibold text-[var(--color-ink)]">{item.q}</span>
+                <span class="shrink-0 grid place-items-center w-7 h-7 rounded-full bg-[#1b7d56] text-white transition group-open:rotate-45"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </summary>
+              <p class="pb-4 pr-10 text-[13.5px] leading-relaxed text-[var(--color-ink)]/75">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <SiteFooter />
+  <GroeiscanWidget contactUrl="#" />
+</Base>
