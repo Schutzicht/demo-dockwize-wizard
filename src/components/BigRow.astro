@@ -22,7 +22,7 @@ const dark = variant === 'dark';
       {eyebrow && <p class={`text-[12px] font-semibold uppercase tracking-wider mb-3 ${dark ? 'text-[var(--color-accent)]' : 'text-[var(--color-ink)]/55'}`}>{eyebrow}</p>}
       <h2 class="text-[clamp(1.6rem,3vw,2.4rem)] font-extrabold tracking-tight leading-[1.1]">{title}</h2>
       <p class={`mt-4 text-[14.5px] leading-relaxed ${dark ? 'text-white/70' : 'text-[var(--color-ink)]/75'}`}>{text}</p>
-      <a href={ctaHref} class="mt-7 self-start inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+      <a href={ctaHref} class="mt-7 self-start inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
         <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         {cta}
       </a>

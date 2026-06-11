@@ -15,6 +15,9 @@
   --color-accent-soft: #fff4b8;
   --color-accent-ink: #1d1d1b;
 
+  /* Dockwize paars voor CTA-knoppen en accenten (1 plek aanpasbaar) */
+  --color-cta: #6C4CF1;
+
   --color-success: #16a34a;
   --color-success-soft: #dcfce7;
   --color-warning: #d97706;

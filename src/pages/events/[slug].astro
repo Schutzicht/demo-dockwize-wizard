@@ -40,7 +40,7 @@ const verwachten = [
             </div>
           ))}
         </div>
-        <a href="#aanmelden" class="shrink-0 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+        <a href="#aanmelden" class="shrink-0 inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
           <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
           Direct aanmelden
         </a>
@@ -61,7 +61,7 @@ const verwachten = [
       <ul class="mt-4 space-y-2.5">
         {verwachten.map((v) => (
           <li class="flex items-start gap-3">
-            <span class="mt-1 shrink-0 text-[#1b7d56]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+            <span class="mt-1 shrink-0 text-[var(--color-cta)]"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             <span class="text-[14px] text-[var(--color-ink-2)] leading-snug">{v}</span>
           </li>
         ))}
@@ -71,7 +71,7 @@ const verwachten = [
     <div class="mt-10">
       <h2 class="text-[20px] font-extrabold tracking-tight text-[var(--color-ink)]">Voor wie is dit event?</h2>
       <p class="mt-2 text-[14px] leading-relaxed text-[var(--color-ink-2)]">Voor ondernemers, maakbedrijven en professionals die nieuwsgierig zijn en willen ontdekken wat dit onderwerp voor hun werk kan betekenen. Of je nu net start of al jaren meedraait, je gaat naar huis met nieuwe inzichten en waardevolle contacten.</p>
-      <a href="#aanmelden" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
+      <a href="#aanmelden" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-5 py-2 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95">
         <span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         Meld je aan
       </a>
@@ -98,7 +98,7 @@ const verwachten = [
           <label class="block sm:col-span-2"><span class="text-[12px] font-medium text-[var(--color-ink-2)]">Bericht <span class="text-[var(--color-ink-3)] font-normal">(optioneel)</span></span><textarea rows="3" placeholder="Wil je alvast iets over jezelf en je bedrijf vertellen?" class="mt-1 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[13.5px] outline-none focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-accent)]/40 transition resize-none"></textarea></label>
           <label class="sm:col-span-2 flex items-start gap-2.5 cursor-pointer"><input type="checkbox" class="mt-0.5 w-4 h-4 accent-[var(--color-ink)]" /><span class="text-[12px] leading-snug text-[var(--color-ink-3)]">Ik ga akkoord met de verwerking van mijn persoonsgegevens zoals beschreven in de privacyverklaring.</span></label>
           <div class="sm:col-span-2">
-            <button class="inline-flex items-center gap-2 rounded-full bg-[#1b7d56] text-white pl-2 pr-5 py-2.5 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Verzenden</button>
+            <button class="inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-5 py-2.5 text-[13.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-7 h-7 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Verzenden</button>
           </div>
         </form>
       </div>
