@@ -21,7 +21,7 @@ export const FACILITIES: Facility[] = [
     features: 'Wifi, Flipover, Beamer',
     price: '€ 74,- per uur',
     intro: 'Ontdek de PZEM-zaal: een ruime en veelzijdige zaal voor €74,00 per uur. Ideaal voor workshops, lezingen of andere evenementen tot 150 personen.',
-    image: '/images/fac-meetingroom.png',
+    image: '/images/fac-meetingroom.jpg',
   },
   {
     slug: 'einstein',
@@ -32,7 +32,7 @@ export const FACILITIES: Facility[] = [
     features: 'Wifi, Scherm, Whiteboard',
     price: '€ 47,40 per uur',
     intro: 'De functionele Einstein-zaal voor €47,40 per uur. Perfect voor vergaderingen, brainstorms en kleinere sessies tot 30 personen.',
-    image: '/images/fac-meetingroom.png',
+    image: '/images/fac-meetingroom.jpg',
   },
   {
     slug: 'hertz',
@@ -43,7 +43,7 @@ export const FACILITIES: Facility[] = [
     features: 'Wifi, Scherm, Koffie',
     price: '€ 47,40 per uur',
     intro: 'De gezellige Hertz-zaal voor €47,40 per uur. Een huiselijke ruimte voor overleg en kleinere bijeenkomsten tot 20 personen.',
-    image: '/images/fac-meetingroom.png',
+    image: '/images/fac-meetingroom.jpg',
   },
   {
     slug: 'tesla',
@@ -54,7 +54,7 @@ export const FACILITIES: Facility[] = [
     features: 'Wifi, Beamer, Flipover',
     price: '€ 74,- per uur',
     intro: 'De Tesla-zaal voor €74,00 per uur. Ruimte en flexibele opstelling voor workshops en presentaties tot 50 personen.',
-    image: '/images/fac-meetingroom.png',
+    image: '/images/fac-meetingroom.jpg',
   },
   {
     slug: 'newton',
@@ -65,7 +65,7 @@ export const FACILITIES: Facility[] = [
     features: 'Wifi, Scherm, Beamer',
     price: '€ 74,- per uur',
     intro: 'De Newton-zaal voor €74,00 per uur. Een lichte ruimte voor trainingen en teamsessies tot 40 personen.',
-    image: '/images/fac-meetingroom.png',
+    image: '/images/fac-meetingroom.jpg',
   },
   {
     slug: 'curie',
@@ -76,7 +76,7 @@ export const FACILITIES: Facility[] = [
     features: 'Wifi, Podium, Geluid',
     price: '€ 74,- per uur',
     intro: 'De Curie-zaal voor €74,00 per uur. Een ruime zaal met podium voor grote events en bijeenkomsten tot 150 personen.',
-    image: '/images/fac-meetingroom.png',
+    image: '/images/fac-meetingroom.jpg',
   },
 ];
 
