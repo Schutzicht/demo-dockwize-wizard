@@ -4,6 +4,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GroeiscanWidget from '../components/GroeiscanWidget.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import EventCard from '../components/EventCard.astro';
 import { EVENTS } from '../data/events';
 
 const pinIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
@@ -30,23 +31,7 @@ const clockIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" s
     <!-- Grid -->
     <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pb-4">
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {EVENTS.slice(0, 2).map((e) => (
-          <a href={`/events/${e.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition flex flex-col" style="transition-timing-function:var(--ease-out-quint);">
-            <div class="relative">
-              <img src={e.image} alt={e.title} class="h-44 w-full object-cover" />
-              <span class="absolute top-3 left-3 grid place-items-center w-12 h-12 rounded-xl bg-[var(--color-accent)] text-[var(--color-ink)] leading-none shadow"><span class="text-[18px] font-extrabold">{e.day}</span><span class="text-[10px] font-semibold uppercase -mt-0.5">{e.month}</span></span>
-            </div>
-            <div class="p-5 flex flex-col flex-1">
-              <span class="text-[11px] font-semibold text-[var(--color-ink-3)] uppercase tracking-wide">{e.type}</span>
-              <h3 class="mt-1.5 text-[16px] font-bold leading-snug text-[var(--color-ink)]">{e.title}</h3>
-              <div class="mt-3 space-y-1 text-[12px] text-[var(--color-ink-3)]">
-                <p class="flex items-center gap-1.5" set:html={pinIcon + ' ' + e.location}></p>
-                <p class="flex items-center gap-1.5" set:html={clockIcon + ' ' + e.time}></p>
-              </div>
-              <span class="mt-4 self-start inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold group-hover:brightness-110 transition"><span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Event bekijken</span>
-            </div>
-          </a>
-        ))}
+        {EVENTS.slice(0, 2).map((e) => <EventCard event={e} />)}
         <!-- Zelf organiseren -->
         <div class="rounded-[18px] bg-[var(--color-ink)] text-white overflow-hidden flex flex-col">
           <div class="relative h-40 shrink-0">
@@ -62,23 +47,7 @@ const clockIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" s
             <a href="/contact" class="mt-4 self-start inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-5 py-2 text-[12.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span> Call-to-action</a>
           </div>
         </div>
-        {EVENTS.slice(2).map((e) => (
-          <a href={`/events/${e.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition flex flex-col" style="transition-timing-function:var(--ease-out-quint);">
-            <div class="relative">
-              <img src={e.image} alt={e.title} class="h-44 w-full object-cover" />
-              <span class="absolute top-3 left-3 grid place-items-center w-12 h-12 rounded-xl bg-[var(--color-accent)] text-[var(--color-ink)] leading-none shadow"><span class="text-[18px] font-extrabold">{e.day}</span><span class="text-[10px] font-semibold uppercase -mt-0.5">{e.month}</span></span>
-            </div>
-            <div class="p-5 flex flex-col flex-1">
-              <span class="text-[11px] font-semibold text-[var(--color-ink-3)] uppercase tracking-wide">{e.type}</span>
-              <h3 class="mt-1.5 text-[16px] font-bold leading-snug text-[var(--color-ink)]">{e.title}</h3>
-              <div class="mt-3 space-y-1 text-[12px] text-[var(--color-ink-3)]">
-                <p class="flex items-center gap-1.5" set:html={pinIcon + ' ' + e.location}></p>
-                <p class="flex items-center gap-1.5" set:html={clockIcon + ' ' + e.time}></p>
-              </div>
-              <span class="mt-4 self-start inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-4 py-1.5 text-[12.5px] font-semibold group-hover:brightness-110 transition"><span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Event bekijken</span>
-            </div>
-          </a>
-        ))}
+        {EVENTS.slice(2).map((e) => <EventCard event={e} />)}
       </div>
 
       <!-- Paginatie -->
