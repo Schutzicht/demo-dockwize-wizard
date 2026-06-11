@@ -1,0 +1,18 @@
+---
+// Kruimelpad als pillen (home-icoon + pagina's), zoals op dockwize.nl
+interface Props {
+  items: [string, string][]; // [label, href]
+}
+const { items } = Astro.props;
+---
+<nav class="inline-flex items-center gap-2 text-[12px]" aria-label="Kruimelpad">
+  <a href="/" aria-label="Home" class="grid place-items-center w-7 h-7 rounded-full bg-[var(--color-ink)]/[0.08] hover:bg-[var(--color-ink)]/15 text-[var(--color-ink)] transition">
+    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+  </a>
+  {items.map(([label, href]) => (
+    <a href={href} class="inline-flex items-center gap-1 pl-2 pr-3 py-1.5 rounded-full bg-[var(--color-ink)]/[0.08] hover:bg-[var(--color-ink)]/15 text-[var(--color-ink)] font-medium transition">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      {label}
+    </a>
+  ))}
+</nav>

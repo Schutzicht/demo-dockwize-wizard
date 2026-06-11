@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GroeiscanWidget from '../components/GroeiscanWidget.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { EVENTS } from '../data/events';
 
 const pinIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
@@ -15,9 +16,10 @@ const clockIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" s
   <div class="bg-[var(--color-accent)]">
     <!-- Hero -->
     <section class="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16 pt-28 sm:pt-32 pb-8">
-      <p class="text-[12px] text-[var(--color-ink)]/55 font-medium">Home &nbsp;›&nbsp; Events</p>
-      <h1 class="mt-3 font-extrabold tracking-[-0.03em] leading-[1.05] text-[clamp(2rem,5vw,3.4rem)] text-[var(--color-ink)] max-w-3xl text-balance">Ontmoet, deel je kennis en raak geïnspireerd</h1>
-      <div class="mt-6 flex flex-col sm:flex-row sm:items-center gap-5">
+      <Breadcrumb items={[['Events', '/events']]} />
+      <h1 class="mt-5 font-extrabold tracking-[-0.03em] leading-[1.05] text-[clamp(2rem,5vw,3.4rem)] text-[var(--color-ink)] max-w-3xl text-balance">Ontmoet, deel je kennis en raak geïnspireerd</h1>
+      <div class="mt-8 border-t-2 border-dotted border-[var(--color-ink)]/30"></div>
+      <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-5">
         <label class="inline-flex items-center gap-2 shrink-0 text-[13px] font-semibold text-[var(--color-ink)]">Toon events per categorie
           <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-ink)] text-white px-3.5 py-1.5">Alles <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
         </label>
@@ -46,14 +48,19 @@ const clockIcon = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" s
           </a>
         ))}
         <!-- Zelf organiseren -->
-        <div class="rounded-[18px] bg-[var(--color-ink)] text-white p-6 flex flex-col justify-between gap-4 overflow-hidden relative">
-          <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-[var(--color-accent)]/15 blur-2xl"></div>
-          <div class="grid place-items-center w-12 h-12 rounded-full bg-white/10"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div>
-            <h3 class="text-[18px] font-extrabold tracking-tight text-[var(--color-accent)]">Zelf een event organiseren?</h3>
-            <p class="mt-1 text-[12.5px] text-white/70">Organiseer jouw evenement in Innovatiepunt KAAP en bereik ondernemend Zeeland.</p>
+        <div class="rounded-[18px] bg-[var(--color-ink)] text-white overflow-hidden flex flex-col">
+          <div class="relative h-40 shrink-0">
+            <img src="/images/hero.jpg" alt="" class="w-full h-full object-cover opacity-35" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)] via-[var(--color-ink)]/40 to-transparent"></div>
+            <span class="absolute left-5 top-6 grid place-items-center w-11 h-11 rounded-full bg-[var(--color-cta)] text-white shadow-lg"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span class="absolute right-6 top-10 grid place-items-center w-12 h-12 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] shadow-lg"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="absolute left-1/2 -translate-x-1/2 bottom-3 grid place-items-center w-10 h-10 rounded-full bg-white/15 backdrop-blur text-white"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></span>
           </div>
-          <a href="/contact" class="self-start inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] text-[var(--color-ink)] pl-2 pr-4 py-1.5 text-[12.5px] font-bold hover:brightness-105 transition active:scale-95"><span class="grid place-items-center w-6 h-6 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Neem contact op</a>
+          <div class="p-6 pt-4 flex flex-col flex-1">
+            <h3 class="text-[18px] font-extrabold tracking-tight text-[var(--color-accent)]">Zelf een event organiseren?</h3>
+            <p class="mt-1.5 text-[12.5px] leading-relaxed text-white/65">Organiseer jouw evenement in Innovatiepunt KAAP en bereik ondernemend Zeeland. We denken graag met je mee over opzet, techniek en promotie.</p>
+            <a href="/contact" class="mt-4 self-start inline-flex items-center gap-2 rounded-full bg-[var(--color-cta)] text-white pl-2 pr-5 py-2 text-[12.5px] font-semibold hover:brightness-110 transition active:scale-95"><span class="grid place-items-center w-6 h-6 rounded-full bg-white/15"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span> Call-to-action</a>
+          </div>
         </div>
         {EVENTS.slice(2).map((e) => (
           <a href={`/events/${e.slug}`} class="group rounded-[18px] bg-[var(--color-surface)] overflow-hidden shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition flex flex-col" style="transition-timing-function:var(--ease-out-quint);">
