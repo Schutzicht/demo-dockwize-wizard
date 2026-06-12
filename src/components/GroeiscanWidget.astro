@@ -1,6 +1,6 @@
 ---
 /**
- * Dockwize Groeiscan — drijvende CTA (rechtsonder) die een slide-over wizard opent.
+ * Dockwize Kompas — drijvende CTA (rechtsonder) die een slide-over wizard opent.
  * Zelfstandig en herbruikbaar: plak <GroeiscanWidget /> op elke pagina van de site.
  */
 interface Props {
@@ -22,7 +22,7 @@ const { contactUrl = '#contact', autoTeaser = true } = Astro.props;
       <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--color-accent)] ring-2 ring-[var(--color-ink)]"></span>
     </span>
     <span class="flex flex-col items-start leading-tight text-left">
-      <span class="text-[13px] font-semibold tracking-tight">Doe de Groeiscan</span>
+      <span class="text-[13px] font-semibold tracking-tight">Doe het Kompas</span>
       <span class="hidden xs:block text-[11px] text-white/55">In welke fase zit je bedrijf?</span>
     </span>
   </button>
@@ -42,7 +42,7 @@ const { contactUrl = '#contact', autoTeaser = true } = Astro.props;
   <!-- Overlay + panel -->
   <div id="dwq-overlay" class="fixed inset-0 z-[70] hidden">
     <div id="dwq-backdrop" class="absolute inset-0 bg-[var(--color-ink)]/35 opacity-0 transition-opacity duration-300 backdrop-blur-[2px]"></div>
-    <aside id="dwq-panel" role="dialog" aria-modal="true" aria-label="Dockwize Groeiscan" tabindex="-1"
+    <aside id="dwq-panel" role="dialog" aria-modal="true" aria-label="Dockwize Kompas" tabindex="-1"
       class="absolute left-1/2 top-1/2 w-[calc(100%-2rem)] sm:w-[480px] max-h-[88dvh] bg-[var(--color-bg)] rounded-[24px] shadow-[var(--shadow-xl)] flex flex-col overflow-hidden outline-none"
       style="transform: translate(-50%, -50%) scale(0.96); opacity: 0; transition: transform 340ms var(--ease-out-quint), opacity 300ms var(--ease-out-quint);">
       <!-- Header -->
@@ -197,7 +197,7 @@ const { contactUrl = '#contact', autoTeaser = true } = Astro.props;
 
   function renderIntro(): string {
     return `<div class="dwq-anim">
-      <div class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[11px] font-semibold text-[var(--color-ink)] mb-4">${ICON.spark} Gratis groeiscan</div>
+      <div class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[11px] font-semibold text-[var(--color-ink)] mb-4">${ICON.spark} Dockwize Kompas</div>
       <h2 class="text-[24px] leading-[1.12] font-semibold tracking-tight text-[var(--color-ink)] text-balance">Waar wil je met je bedrijf naartoe?</h2>
       <p class="mt-3 text-[13.5px] leading-relaxed text-[var(--color-ink-2)]">Een paar korte vragen over waar je staat, hoe je bedrijf ervoor staat en wat er nu speelt. Je krijgt meteen een passend Dockwize-programma, en een coach denkt met je mee.</p>
       <div class="mt-5 space-y-2.5">
@@ -374,7 +374,7 @@ const { contactUrl = '#contact', autoTeaser = true } = Astro.props;
   function renderFooter() {
     const idx = FLOW.indexOf(stepKey);
     if (stepKey === 'intro') {
-      footer.innerHTML = primaryBtn('Start de Groeiscan', true);
+      footer.innerHTML = primaryBtn('Doe het Kompas', true);
       $('#dwq-next')!.addEventListener('click', goNext);
       return;
     }

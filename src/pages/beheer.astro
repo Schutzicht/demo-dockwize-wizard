@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import DockwizeLogo from '../components/DockwizeLogo.astro';
 ---
 
-<Base title="Groeiscan · Inzendingen — Dockwize">
+<Base title="Dockwize Kompas · Inzendingen — Dockwize">
   <div class="min-h-screen">
     <!-- Topbar -->
     <header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur-md">
@@ -28,7 +28,7 @@ import DockwizeLogo from '../components/DockwizeLogo.astro';
     <main class="mx-auto max-w-5xl px-5 sm:px-8 py-8 sm:py-10">
       <div class="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1 class="text-[26px] font-semibold tracking-tight text-[var(--color-ink)]">Inzendingen Groeiscan</h1>
+          <h1 class="text-[26px] font-semibold tracking-tight text-[var(--color-ink)]">Inzendingen Dockwize Kompas</h1>
           <p class="mt-1 text-[14px] text-[var(--color-ink-2)]">Iedereen die de scan invult, verschijnt hier — inclusief fase, openstaande stappen en e-mailadres.</p>
         </div>
         <button id="clear" class="text-[12.5px] text-[var(--color-ink-3)] hover:text-[var(--color-danger)] transition">Alles wissen</button>
@@ -106,7 +106,7 @@ import DockwizeLogo from '../components/DockwizeLogo.astro';
       if (!subs.length) {
         listEl.innerHTML = `<div class="rounded-[18px] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface)] p-10 text-center">
           <p class="text-[15px] font-medium text-[var(--color-ink)]">Nog geen inzendingen</p>
-          <p class="mt-1.5 text-[13.5px] text-[var(--color-ink-3)] max-w-sm mx-auto">Vul de Groeiscan in via de knop rechtsonder op de <a href="/" class="underline hover:text-[var(--color-ink)]">homepage</a>. De inzending verschijnt dan hier.</p>
+          <p class="mt-1.5 text-[13.5px] text-[var(--color-ink-3)] max-w-sm mx-auto">Vul het Dockwize Kompas in via de knop rechtsonder op de <a href="/" class="underline hover:text-[var(--color-ink)]">homepage</a>. De inzending verschijnt dan hier.</p>
         </div>`;
         return;
       }
@@ -167,7 +167,7 @@ import DockwizeLogo from '../components/DockwizeLogo.astro';
             ${s.challenge ? `<div class="mt-3"><p class="text-[11px] uppercase tracking-wide font-semibold text-[var(--color-ink-3)]">Grootste uitdaging (eigen woorden)</p><p class="mt-1 text-[12.5px] text-[var(--color-ink-2)] leading-snug italic-none">“${esc(s.challenge)}”</p></div>` : ''}
 
             <div class="mt-5 flex items-center gap-3">
-              <a href="mailto:${esc(s.contact.email)}?subject=Je%20Dockwize%20Groeiscan" class="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-[var(--color-ink)] text-white text-[12.5px] font-semibold transition active:scale-95">Mail ${esc(s.contact.name.split(' ')[0] || '')}</a>
+              <a href="mailto:${esc(s.contact.email)}?subject=Je%20Dockwize%20Kompas" class="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-[var(--color-ink)] text-white text-[12.5px] font-semibold transition active:scale-95">Mail ${esc(s.contact.name.split(' ')[0] || '')}</a>
               <button data-del="${s.id}" class="ml-auto text-[12px] text-[var(--color-ink-3)] hover:text-[var(--color-danger)] transition">Verwijder</button>
             </div>
           </div>
@@ -191,7 +191,7 @@ import DockwizeLogo from '../components/DockwizeLogo.astro';
       const csv = rows.map((r) => r.map((c) => `"${(c || '').replace(/"/g, '""')}"`).join(',')).join('\n');
       const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
       const a = document.createElement('a');
-      a.href = url; a.download = 'groeiscan-inzendingen.csv'; a.click();
+      a.href = url; a.download = 'dockwize-kompas-inzendingen.csv'; a.click();
       URL.revokeObjectURL(url);
     }
 
