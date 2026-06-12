@@ -10,7 +10,7 @@ import {
  * ========================================================================== */
 
 export interface NeedsAnswers {
-  situation: PhaseId | null;
+  situation: PhaseId | 0 | null; // 0 = "weet ik nog niet"
   team: string;
   traction: string;
   needs: string[];
@@ -39,7 +39,7 @@ const PHASE_PKG: Record<PhaseId, PackageKey> = { 1: 'explorer', 2: 'potential', 
 
 export function analyzeNeeds(a: NeedsAnswers): NeedsResult {
   const selectedNeeds = NEEDS.filter((n) => a.needs.includes(n.id));
-  const sit = a.situation;
+  const sit = (a.situation && a.situation > 0 ? a.situation : null) as PhaseId | null; // "weet ik nog niet" => geen fase-claim
   const tract = TRACTION.find((t) => t.value === a.traction) ?? null;
   const team = TEAM_SIZES.find((t) => t.value === a.team) ?? null;
 

@@ -236,17 +236,20 @@ export const ANSWER_OPTIONS: { value: 0 | 0.5 | 1; label: string }[] = [
  * ========================================================================== */
 
 export interface Situation {
-  id: PhaseId;
+  id: PhaseId | 0; // 0 = weet het nog niet (geen fase-claim)
   label: string;
   sub: string;
+  unsure?: boolean;
 }
 
-/** Stap 1 — waar staat de ondernemer (gevoelsmatig, in eigen taal). */
+/** Stap 1 — waar staat de ondernemer (gevoelsmatig, in eigen taal).
+ *  Dit zijn bewust de BEGIN-punten van de vier levensfasen (overleg Dockwize). */
 export const SITUATIONS: Situation[] = [
   { id: 1, label: 'Ik heb een idee', sub: 'Ik wil weten of er echt markt en behoefte voor is' },
   { id: 2, label: 'Ik heb een product of prototype', sub: 'En ik wil het naar de markt brengen' },
   { id: 3, label: 'Ik heb mijn eerste klanten', sub: 'En ik wil structureel gaan verkopen' },
   { id: 4, label: 'Mijn bedrijf draait en groeit', sub: 'Ik wil opschalen: mensen, organisatie, strategie' },
+  { id: 0, label: 'Ik weet het nog niet', sub: 'Help me ontdekken waar ik sta', unsure: true },
 ];
 
 export interface Need {

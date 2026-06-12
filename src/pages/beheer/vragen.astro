@@ -70,7 +70,7 @@ const pkgList = Object.values(PACKAGES).filter((p, i, a) => a.findIndex((x) => x
         <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {SITUATIONS.map((s) => (
             <div class="rounded-[16px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
-              <span class={`text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${phaseTone(s.id)}`}>Fase {s.id} · {PHASE_PLAIN[s.id].label}</span>
+              <span class={`text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${s.id ? phaseTone(s.id) : 'bg-[var(--color-surface-2)] text-[var(--color-ink-3)]'}`}>{s.id ? `Fase ${s.id} · ${PHASE_PLAIN[s.id].label}` : 'Geen fase-claim'}</span>
               <p class="mt-2 text-[13.5px] font-semibold text-[var(--color-ink)]">{s.label}</p>
               <p class="text-[11.5px] text-[var(--color-ink-3)] mt-0.5">{s.sub}</p>
             </div>
